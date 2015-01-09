@@ -28,6 +28,8 @@ namespace CourseMessengerWeb.Models
         public string StudentId { get; set; }
         public bool IsStudent { get; set; }
 
+
+        public int DepartmentId { get; set; }
         public virtual  Department Department { get; set; }
 
         public virtual ICollection<Subscription> Subscriptions { get; set; }

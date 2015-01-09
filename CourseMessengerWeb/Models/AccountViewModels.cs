@@ -79,6 +79,17 @@ namespace CourseMessengerWeb.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Please enter your fullname.")]
+        
+        public string Fullname { get; set; }
+
+        [Required(ErrorMessage = "Please enter your student id.")]
+        [Display(Name = "Student ID")]
+        public string StudentId { get; set; }
+        [Display(Name = "Phone Number")]
+        [Required]
+        public string PhoneNumber { get; set; }
     }
 
     public class ResetPasswordViewModel

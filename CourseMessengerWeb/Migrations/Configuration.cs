@@ -1,3 +1,7 @@
+using CourseMessengerWeb.Components;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace CourseMessengerWeb.Migrations
 {
     using System;
@@ -26,6 +30,21 @@ namespace CourseMessengerWeb.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            var roleStore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            foreach (var role in ApplicationRoles.GetAllRoles())
+            {
+                if (!roleManager.RoleExists(role))
+                {
+                    roleManager.Create(new IdentityRole(role));
+                }    
+            }
+            
+
+            
+
         }
     }
 }
