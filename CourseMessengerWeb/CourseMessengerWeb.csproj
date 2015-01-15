@@ -164,8 +164,10 @@
     <Compile Include="Components\ApplicationRoles.cs" />
     <Compile Include="Components\SmsModule.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RemindersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -173,9 +175,22 @@
     <Compile Include="Migrations\201501081918483_Initial_Database_Design.Designer.cs">
       <DependentUpon>201501081918483_Initial_Database_Design.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501151801202_UnknownMigrations.cs" />
+    <Compile Include="Migrations\201501151801202_UnknownMigrations.Designer.cs">
+      <DependentUpon>201501151801202_UnknownMigrations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501151923120_Subscription_Removed_ApplicationId.cs" />
+    <Compile Include="Migrations\201501151923120_Subscription_Removed_ApplicationId.Designer.cs">
+      <DependentUpon>201501151923120_Subscription_Removed_ApplicationId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.cs" />
+    <Compile Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.Designer.cs">
+      <DependentUpon>201501151949363_Subscription_Removed_ApplicationUser_FK.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\ConfirmAccountViewModel.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -246,6 +261,18 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Account\PromptConfirm.cshtml" />
+    <Content Include="Views\Courses\Create.cshtml" />
+    <Content Include="Views\Courses\Delete.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Courses\Edit.cshtml" />
+    <Content Include="Views\Courses\Index.cshtml" />
+    <Content Include="Views\Reminders\Create.cshtml" />
+    <Content Include="Views\Reminders\Delete.cshtml" />
+    <Content Include="Views\Reminders\Details.cshtml" />
+    <Content Include="Views\Reminders\Edit.cshtml" />
+    <Content Include="Views\Reminders\Index.cshtml" />
+    <Content Include="Views\Reminders\StudentView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -260,6 +287,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201501081918483_Initial_Database_Design.resx">
       <DependentUpon>201501081918483_Initial_Database_Design.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501151801202_UnknownMigrations.resx">
+      <DependentUpon>201501151801202_UnknownMigrations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501151923120_Subscription_Removed_ApplicationId.resx">
+      <DependentUpon>201501151923120_Subscription_Removed_ApplicationId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.resx">
+      <DependentUpon>201501151949363_Subscription_Removed_ApplicationUser_FK.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

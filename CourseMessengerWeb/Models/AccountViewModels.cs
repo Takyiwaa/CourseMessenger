@@ -50,7 +50,7 @@ namespace CourseMessengerWeb.Models
     {
         [Required]
         [Display(Name = "Student Id")]
-        [EmailAddress]
+       // [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -90,6 +90,10 @@ namespace CourseMessengerWeb.Models
         [Display(Name = "Phone Number")]
         [Required]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Department")]
+        public int DepartmentId { get; set; }
     }
 
     public class ResetPasswordViewModel

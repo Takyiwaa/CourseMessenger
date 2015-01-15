@@ -1,0 +1,45 @@
+﻿@model CourseMessengerWeb.Models.ConfirmAccountViewModel
+@{
+    ViewBag.Title = "Confirm your account";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<blockquote>
+    <p>Hi @ViewBag.Name, please check your email or phone number to confirm your registration. Enter the codes that were sent to you.</p>
+  
+</blockquote>
+
+@using (Html.BeginForm("ActivateAccount", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @*<h4>Confirm your account.</h4>*@
+    <hr />
+    
+    @Html.HiddenFor(m=>m.UserId)
+    @Html.HiddenFor(m=>m.PhoneNumber)
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.EmailCode, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.EmailCode, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.SmsCode, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.SmsCode, new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-success" value="Activate my account" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

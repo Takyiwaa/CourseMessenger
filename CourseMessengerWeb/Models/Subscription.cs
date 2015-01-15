@@ -7,9 +7,9 @@ namespace CourseMessengerWeb.Models
     {
         [Key]
         public int Id { get; set; }
-        public int ApplicationUserId { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; }
-
+    
+        //public virtual ApplicationUser ApplicationUser { get; set; }
+        public string IndexNumber { get; set; }
         public int ReminderId { get; set; }
         public virtual  Reminder Reminder { get; set; }
         public DateTime SubscriptionDate { get; set; }

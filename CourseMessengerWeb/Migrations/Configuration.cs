@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using CourseMessengerWeb.Components;
+using CourseMessengerWeb.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -41,9 +43,15 @@ namespace CourseMessengerWeb.Migrations
                     roleManager.Create(new IdentityRole(role));
                 }    
             }
-            
 
-            
+
+            context.Departments.AddOrUpdate(d => d.Name, new Department
+                                                         {
+                                                             Name ="Computer Engineering",
+                                                             
+                                                         });
+
+
 
         }
     }

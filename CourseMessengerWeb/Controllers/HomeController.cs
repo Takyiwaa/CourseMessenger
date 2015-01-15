@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CourseMessengerWeb.Components;
 
 namespace CourseMessengerWeb.Controllers
 {
@@ -11,7 +12,13 @@ namespace CourseMessengerWeb.Controllers
     {
         public ActionResult Index()
         {
+            if (User.IsInRole(ApplicationRoles.Student))
+            {
+                return RedirectToAction("studentview", "reminders");
+            }
+
             return View();
+
         }
 
         public ActionResult About()

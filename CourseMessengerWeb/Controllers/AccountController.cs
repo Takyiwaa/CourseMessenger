@@ -143,6 +143,9 @@ namespace CourseMessengerWeb.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var db = new ApplicationDbContext();
+            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name");
+
             return View();
         }
 
@@ -158,30 +161,44 @@ namespace CourseMessengerWeb.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email, Email = model.Email,
+                    UserName = model.StudentId, Email = model.Email,
                     IsStudent =true,
                     PhoneNumber = model.PhoneNumber,
                     Fullname = model.Fullname,
                     StudentId = model.StudentId,
                     Status = 0,
+                    DepartmentId = model.DepartmentId
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await UserManager.AddToRoleAsync(user.Id, ApplicationRoles.Student);
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
+                    
                      string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    //string phoneCode = await UserManager.GenerateUserTokenAsync("PhoneNumberToken", user.Id);
+                    
+                     string phoneCode = await UserManager.GenerateChangePhoneNumberTokenAsync(user.Id,user.PhoneNumber);
 
                      var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                      await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    await UserManager.SendSmsAsync(user.Id, "Your confirmation token is: " + code);
+                    await UserManager.SendSmsAsync(user.Id, "Your confirmation token is: " + phoneCode);
 
-                    return RedirectToAction("verifycode",new{provider="Sms",returnUrl="",rememberMe=false});
-                    //return RedirectToAction("Index", "Home");
+                    ViewBag.PhoneCode = phoneCode;
+                    ViewBag.EmailCode = code;
+                    ViewBag.Name = model.Fullname;
+
+                    var confirmAccount = new ConfirmAccountViewModel
+                                         {
+                                             UserId = user.Id,
+                                             EmailCode = code,
+                                             SmsCode = phoneCode,
+                                             PhoneNumber = model.PhoneNumber
+                                         };
+                    return View("PromptConfirm",confirmAccount);
+                    
                 }
                 AddErrors(result);
             }
@@ -201,6 +218,39 @@ namespace CourseMessengerWeb.Controllers
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> ActivateAccount(ConfirmAccountViewModel confirmAccount)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await UserManager.ConfirmEmailAsync(confirmAccount.UserId, confirmAccount.EmailCode);
+                if (result.Succeeded)
+                {
+                    result = await UserManager.ChangePhoneNumberAsync(confirmAccount.UserId, confirmAccount.PhoneNumber, confirmAccount.SmsCode);
+
+                    if (result.Succeeded)
+                    {
+                        await UserManager.SetTwoFactorEnabledAsync(confirmAccount.UserId, true);
+
+                        var user = await UserManager.FindByIdAsync(confirmAccount.UserId);
+                        await SignInManager.SignInAsync(user, isPersistent: true, rememberBrowser: false);
+
+                        return RedirectToAction("index", "home");
+                    }
+                    ModelState.AddModelError("", "Sorry, sms confirmation failed");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Sorry, email confirmation failed");
+                }
+                
+            }
+          
+           
+            return View("PromptConfirm");
         }
 
         //
