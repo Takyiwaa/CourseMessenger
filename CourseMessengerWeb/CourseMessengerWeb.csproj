@@ -162,6 +162,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Components\ApplicationRoles.cs" />
+    <Compile Include="Components\EmailModule.cs" />
     <Compile Include="Components\SmsModule.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Templates\EmailConfirmation.txt" />
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -273,9 +275,10 @@
     <Content Include="Views\Reminders\Edit.cshtml" />
     <Content Include="Views\Reminders\Index.cshtml" />
     <Content Include="Views\Reminders\StudentView.cshtml" />
+    <Content Include="Views\Account\ConfirmSms.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Elmah\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

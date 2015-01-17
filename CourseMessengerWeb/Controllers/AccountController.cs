@@ -72,6 +72,28 @@ namespace CourseMessengerWeb.Controllers
                 return View(model);
             }
 
+            var user = await UserManager.FindByNameAsync(model.Email);
+
+            if (user!=null)
+            {
+                if (!user.EmailConfirmed)
+                {
+                    ViewBag.Name = user.Fullname;
+                    return View("PromptConfirm");
+                }
+                if (!user.PhoneNumberConfirmed)
+                {
+                    var confirmAccount = new ConfirmAccountViewModel
+                    {
+                        UserId = user.Id,
+                        EmailCode = string.Empty,
+                        SmsCode = string.Empty,
+                        PhoneNumber = user.PhoneNumber
+                    };
+                    return View("ConfirmSms", confirmAccount);
+                }
+            }
+           
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -179,25 +201,20 @@ namespace CourseMessengerWeb.Controllers
                     // Send an email with this link
                     
                      string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                     string phoneCode = await UserManager.GenerateChangePhoneNumberTokenAsync(user.Id, user.PhoneNumber);
+
+                     await UserManager.SendSmsAsync(user.Id, "Your confirmation token is: " + phoneCode);
                     
-                     string phoneCode = await UserManager.GenerateChangePhoneNumberTokenAsync(user.Id,user.PhoneNumber);
-
                      var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    await UserManager.SendSmsAsync(user.Id, "Your confirmation token is: " + phoneCode);
-
-                    ViewBag.PhoneCode = phoneCode;
-                    ViewBag.EmailCode = code;
+                    await
+                        UserManager.SendEmailAsync(user.Id, "Confirm Your Account",
+                            "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    
+                   
                     ViewBag.Name = model.Fullname;
 
-                    var confirmAccount = new ConfirmAccountViewModel
-                                         {
-                                             UserId = user.Id,
-                                             EmailCode = code,
-                                             SmsCode = phoneCode,
-                                             PhoneNumber = model.PhoneNumber
-                                         };
-                    return View("PromptConfirm",confirmAccount);
+                   
+                    return View("PromptConfirm");
                     
                 }
                 AddErrors(result);
@@ -217,6 +234,22 @@ namespace CourseMessengerWeb.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(userId);
+                
+                ViewBag.Name = user.Fullname;
+
+                var confirmAccount = new ConfirmAccountViewModel
+                {
+                    UserId = user.Id,
+                    EmailCode = code,
+                    SmsCode = string.Empty,
+                    PhoneNumber = user.PhoneNumber
+                };
+                return View("ConfirmSms", confirmAccount);
+            }
+
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -226,16 +259,19 @@ namespace CourseMessengerWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await UserManager.ConfirmEmailAsync(confirmAccount.UserId, confirmAccount.EmailCode);
-                if (result.Succeeded)
+                var user = await UserManager.FindByIdAsync(confirmAccount.UserId);
+                if (user!=null)
                 {
-                    result = await UserManager.ChangePhoneNumberAsync(confirmAccount.UserId, confirmAccount.PhoneNumber, confirmAccount.SmsCode);
+                    if (!user.EmailConfirmed)
+                    {
+                        ViewBag.Name = user.Fullname;
+                        return View("PromptConfirm");
+                    }
+                    var result = await UserManager.ChangePhoneNumberAsync(confirmAccount.UserId, confirmAccount.PhoneNumber, confirmAccount.SmsCode);
 
                     if (result.Succeeded)
                     {
-                        await UserManager.SetTwoFactorEnabledAsync(confirmAccount.UserId, true);
-
-                        var user = await UserManager.FindByIdAsync(confirmAccount.UserId);
+                        //await UserManager.SetTwoFactorEnabledAsync(confirmAccount.UserId, true);
                         await SignInManager.SignInAsync(user, isPersistent: true, rememberBrowser: false);
 
                         return RedirectToAction("index", "home");
@@ -244,7 +280,7 @@ namespace CourseMessengerWeb.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Sorry, email confirmation failed");
+                    ModelState.AddModelError("", "Sorry, you have not confirmed your email address. Please check your email.");
                 }
                 
             }

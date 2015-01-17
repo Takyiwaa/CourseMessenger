@@ -19,6 +19,7 @@ namespace CourseMessengerWeb
     {
         public Task SendAsync(IdentityMessage message)
         {
+            new EmailModule().SendEmail(message.Destination,message.Body,message.Subject);
             // Plug in your email service here to send an email.
             return Task.FromResult(0);
         }

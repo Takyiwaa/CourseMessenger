@@ -4,7 +4,7 @@ namespace CourseMessengerWeb.Models
 {
     public class ConfirmAccountViewModel
     {
-        [Required]
+       // [Required]
         public string EmailCode { get; set; }
         [Required]
         public string SmsCode { get; set; }
