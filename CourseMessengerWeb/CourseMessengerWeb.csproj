@@ -174,29 +174,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201501081918483_Initial_Database_Design.cs" />
-    <Compile Include="Migrations\201501081918483_Initial_Database_Design.Designer.cs">
-      <DependentUpon>201501081918483_Initial_Database_Design.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201501151801202_UnknownMigrations.cs" />
-    <Compile Include="Migrations\201501151801202_UnknownMigrations.Designer.cs">
-      <DependentUpon>201501151801202_UnknownMigrations.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201501151923120_Subscription_Removed_ApplicationId.cs" />
-    <Compile Include="Migrations\201501151923120_Subscription_Removed_ApplicationId.Designer.cs">
-      <DependentUpon>201501151923120_Subscription_Removed_ApplicationId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.cs" />
-    <Compile Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.Designer.cs">
-      <DependentUpon>201501151949363_Subscription_Removed_ApplicationUser_FK.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.cs" />
-    <Compile Include="Migrations\201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.Designer.cs">
-      <DependentUpon>201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201501231847349_Renamed_ExamInfo_To_ExamTimeTable.cs" />
-    <Compile Include="Migrations\201501231847349_Renamed_ExamInfo_To_ExamTimeTable.Designer.cs">
-      <DependentUpon>201501231847349_Renamed_ExamInfo_To_ExamTimeTable.cs</DependentUpon>
+    <Compile Include="Migrations\201501231855131_initial_tables.cs" />
+    <Compile Include="Migrations\201501231855131_initial_tables.Designer.cs">
+      <DependentUpon>201501231855131_initial_tables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -304,23 +284,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201501081918483_Initial_Database_Design.resx">
-      <DependentUpon>201501081918483_Initial_Database_Design.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201501151801202_UnknownMigrations.resx">
-      <DependentUpon>201501151801202_UnknownMigrations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201501151923120_Subscription_Removed_ApplicationId.resx">
-      <DependentUpon>201501151923120_Subscription_Removed_ApplicationId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.resx">
-      <DependentUpon>201501151949363_Subscription_Removed_ApplicationUser_FK.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.resx">
-      <DependentUpon>201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201501231847349_Renamed_ExamInfo_To_ExamTimeTable.resx">
-      <DependentUpon>201501231847349_Renamed_ExamInfo_To_ExamTimeTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201501231855131_initial_tables.resx">
+      <DependentUpon>201501231855131_initial_tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

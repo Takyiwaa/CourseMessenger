@@ -7,13 +7,13 @@ namespace CourseMessengerWeb.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class UnknownMigrations : IMigrationMetadata
+    public sealed partial class initial_tables : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UnknownMigrations));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initial_tables));
         
         string IMigrationMetadata.Id
         {
-            get { return "201501151801202_UnknownMigrations"; }
+            get { return "201501231855131_initial_tables"; }
         }
         
         string IMigrationMetadata.Source

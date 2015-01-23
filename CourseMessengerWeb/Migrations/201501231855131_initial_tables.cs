@@ -3,7 +3,7 @@ namespace CourseMessengerWeb.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial_Database_Design : DbMigration
+    public partial class initial_tables : DbMigration
     {
         public override void Up()
         {
@@ -39,6 +39,7 @@ namespace CourseMessengerWeb.Migrations
                         Status = c.Int(nullable: false),
                         StudentId = c.String(),
                         IsStudent = c.Boolean(nullable: false),
+                        DepartmentId = c.Int(nullable: false),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -50,12 +51,11 @@ namespace CourseMessengerWeb.Migrations
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
                         UserName = c.String(nullable: false, maxLength: 256),
-                        Department_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Departments", t => t.Department_Id)
-                .Index(t => t.UserName, unique: true, name: "UserNameIndex")
-                .Index(t => t.Department_Id);
+                .ForeignKey("dbo.Departments", t => t.DepartmentId, cascadeDelete: true)
+                .Index(t => t.DepartmentId)
+                .Index(t => t.UserName, unique: true, name: "UserNameIndex");
             
             CreateTable(
                 "dbo.AspNetUserClaims",
@@ -100,18 +100,20 @@ namespace CourseMessengerWeb.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ApplicationUserId = c.Int(nullable: false),
-                        ReminderId = c.Int(nullable: false),
+                        IndexNumber = c.String(),
+                        EntityId = c.Int(nullable: false),
+                        SubscriptionType = c.Int(nullable: false),
                         SubscriptionDate = c.DateTime(nullable: false),
                         UnsubscribeDate = c.DateTime(),
                         Status = c.Int(nullable: false),
                         ApplicationUser_Id = c.String(maxLength: 128),
+                        ExamTimeTable_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
-                .ForeignKey("dbo.ExamTimeTables", t => t.ReminderId, cascadeDelete: true)
-                .Index(t => t.ReminderId)
-                .Index(t => t.ApplicationUser_Id);
+                .ForeignKey("dbo.ExamTimeTables", t => t.ExamTimeTable_Id)
+                .Index(t => t.ApplicationUser_Id)
+                .Index(t => t.ExamTimeTable_Id);
             
             CreateTable(
                 "dbo.ExamTimeTables",
@@ -153,24 +155,24 @@ namespace CourseMessengerWeb.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Courses", "DepartmentId", "dbo.Departments");
-            DropForeignKey("dbo.Subscriptions", "ReminderId", "dbo.ExamTimeTables");
+            DropForeignKey("dbo.Subscriptions", "ExamTimeTable_Id", "dbo.ExamTimeTables");
             DropForeignKey("dbo.ExamTimeTables", "CourseId", "dbo.Courses");
+            DropForeignKey("dbo.Courses", "DepartmentId", "dbo.Departments");
             DropForeignKey("dbo.Subscriptions", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUsers", "Department_Id", "dbo.Departments");
+            DropForeignKey("dbo.AspNetUsers", "DepartmentId", "dbo.Departments");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.ExamTimeTables", new[] { "CourseId" });
+            DropIndex("dbo.Subscriptions", new[] { "ExamTimeTable_Id" });
             DropIndex("dbo.Subscriptions", new[] { "ApplicationUser_Id" });
-            DropIndex("dbo.Subscriptions", new[] { "ReminderId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
-            DropIndex("dbo.AspNetUsers", new[] { "Department_Id" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.AspNetUsers", new[] { "DepartmentId" });
             DropIndex("dbo.Courses", new[] { "DepartmentId" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.ReminderMessages");

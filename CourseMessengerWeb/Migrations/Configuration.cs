@@ -52,6 +52,20 @@ namespace CourseMessengerWeb.Migrations
                                                          });
 
 
+            context.Courses.AddOrUpdate(c=>c.Name,new []{new Course
+            {
+                DepartmentId=1,
+                Code="CPEN 403",
+                Description= "Control Systems",
+                Name= "Control Systems",
+                
+            },new Course
+            {
+                DepartmentId=1,
+                Code = "CPEN 401",
+                Name = "Artificial Intelligence",
+                Description = "Artificial Intelligence"
+            }});
 
         }
     }
