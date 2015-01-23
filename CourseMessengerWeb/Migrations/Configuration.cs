@@ -67,6 +67,27 @@ namespace CourseMessengerWeb.Migrations
                 Description = "Artificial Intelligence"
             }});
 
+            context.ExamTimeTables.AddOrUpdate(c=>c.CourseId, new []
+            {
+               
+                 new ExamTimeTable
+                {
+                    CourseId = 1,
+                    StartTime = DateTime.Now.AddDays(7),
+                    EndTime = DateTime.Now.AddDays(7).AddHours(2),
+                    ReminderType = 1,
+                    Status = 1
+                },  new ExamTimeTable
+                {
+                    CourseId = 2,
+                    StartTime = DateTime.Now.AddDays(6),
+                    EndTime = DateTime.Now.AddDays(6).AddHours(2),
+                    ReminderType = 1,
+                    Status = 1
+                }, 
+                
+            });
+
         }
     }
 }
