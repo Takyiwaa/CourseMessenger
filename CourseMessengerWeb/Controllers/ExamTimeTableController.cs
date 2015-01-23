@@ -14,19 +14,19 @@ using Microsoft.AspNet.Identity.Owin;
 namespace CourseMessengerWeb.Controllers
 {
     [Authorize]
-    public class RemindersController : Controller
+    public class ExamTimeTableController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Reminders
+        // GET: ExamTimeTables
           [Authorize(Roles = ApplicationRoles.Administrator)]
         public async Task<ActionResult> Index()
         {
-            var reminders = db.Reminders.Include(r => r.Course);
+            var reminders = db.ExamTimeTables.Include(r => r.Course);
             return View(await reminders.ToListAsync());
         }
 
-        // GET: Reminders/Details/5
+        // GET: ExamTimeTables/Details/5
           [Authorize(Roles = ApplicationRoles.Administrator)]
         public async Task<ActionResult> Details(int? id)
         {
@@ -34,60 +34,17 @@ namespace CourseMessengerWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reminder reminder = await db.Reminders.FindAsync(id);
-            if (reminder == null)
+            ExamTimeTable examTimeTable = await db.ExamTimeTables.FindAsync(id);
+            if (examTimeTable == null)
             {
                 return HttpNotFound();
             }
-            return View(reminder);
+            return View(examTimeTable);
         }
 
-        [Authorize(Roles = "Administrator,Student")]
-        public async Task<ActionResult> StudentView()
-        {
-            
-            //var mySubscriptions = db.Subscriptions.Where(s => s.ApplicationUser.UserName == User.Identity.Name);
-            var user = await UserManager.FindByNameAsync(User.Identity.Name);
+      
 
-            if (user!=null)
-            {
-
-                var examReminders = db.Reminders.Include(t=>t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId);
-                return View(examReminders);
-            }
-           
-
-            return View();
-        }
-
-           [Authorize(Roles = "Administrator,Student")]
-        public async Task<ActionResult> Subscribe(int id)
-        {
-
-            var user = await UserManager.FindByEmailAsync(User.Identity.Name);
-
-            var reminder = await db.Reminders.FindAsync(id);
-            if (reminder==null)
-            {
-                return HttpNotFound("couldn't find that exam time table");
-            }
-
-            var subscription = new Subscription
-                               {
-                                   IndexNumber = user.StudentId,
-                                   ReminderId = id,
-                                   Status = 1,
-                                   SubscriptionDate = DateTime.Now,
-                               };
-
-               using (var context = new ApplicationDbContext())
-               {
-                   context.Subscriptions.Add(subscription);
-                   await context.SaveChangesAsync();
-               }
-          
-            return RedirectToAction("StudentView");
-        }
+    
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -102,7 +59,7 @@ namespace CourseMessengerWeb.Controllers
             }
         }
 
-        // GET: Reminders/Create
+        // GET: ExamTimeTables/Create
           [Authorize(Roles = ApplicationRoles.Administrator)]
         public ActionResult Create()
         {
@@ -110,26 +67,26 @@ namespace CourseMessengerWeb.Controllers
             return View();
         }
 
-        // POST: Reminders/Create
+        // POST: ExamTimeTables/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = ApplicationRoles.Administrator)]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] Reminder reminder)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] ExamTimeTable examTimeTable)
         {
             if (ModelState.IsValid)
             {
-                db.Reminders.Add(reminder);
+                db.ExamTimeTables.Add(examTimeTable);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", reminder.CourseId);
-            return View(reminder);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            return View(examTimeTable);
         }
 
-        // GET: Reminders/Edit/5
+        // GET: ExamTimeTables/Edit/5
           [Authorize(Roles = ApplicationRoles.Administrator)]
         public async Task<ActionResult> Edit(int? id)
         {
@@ -137,34 +94,34 @@ namespace CourseMessengerWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reminder reminder = await db.Reminders.FindAsync(id);
-            if (reminder == null)
+            ExamTimeTable examTimeTable = await db.ExamTimeTables.FindAsync(id);
+            if (examTimeTable == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", reminder.CourseId);
-            return View(reminder);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            return View(examTimeTable);
         }
 
-        // POST: Reminders/Edit/5
+        // POST: ExamTimeTables/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = ApplicationRoles.Administrator)]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] Reminder reminder)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] ExamTimeTable examTimeTable)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(reminder).State = EntityState.Modified;
+                db.Entry(examTimeTable).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", reminder.CourseId);
-            return View(reminder);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            return View(examTimeTable);
         }
 
-        // GET: Reminders/Delete/5
+        // GET: ExamTimeTables/Delete/5
           [Authorize(Roles = ApplicationRoles.Administrator)]
         public async Task<ActionResult> Delete(int? id)
         {
@@ -172,22 +129,22 @@ namespace CourseMessengerWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reminder reminder = await db.Reminders.FindAsync(id);
-            if (reminder == null)
+            ExamTimeTable examTimeTable = await db.ExamTimeTables.FindAsync(id);
+            if (examTimeTable == null)
             {
                 return HttpNotFound();
             }
-            return View(reminder);
+            return View(examTimeTable);
         }
 
-        // POST: Reminders/Delete/5
+        // POST: ExamTimeTables/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = ApplicationRoles.Administrator)]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Reminder reminder = await db.Reminders.FindAsync(id);
-            db.Reminders.Remove(reminder);
+            ExamTimeTable examTimeTable = await db.ExamTimeTables.FindAsync(id);
+            db.ExamTimeTables.Remove(examTimeTable);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -201,4 +158,6 @@ namespace CourseMessengerWeb.Controllers
             base.Dispose(disposing);
         }
     }
+
+   
 }

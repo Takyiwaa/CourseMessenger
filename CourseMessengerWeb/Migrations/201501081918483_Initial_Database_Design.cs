@@ -109,12 +109,12 @@ namespace CourseMessengerWeb.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
-                .ForeignKey("dbo.Reminders", t => t.ReminderId, cascadeDelete: true)
+                .ForeignKey("dbo.ExamTimeTables", t => t.ReminderId, cascadeDelete: true)
                 .Index(t => t.ReminderId)
                 .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
-                "dbo.Reminders",
+                "dbo.ExamTimeTables",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -154,15 +154,15 @@ namespace CourseMessengerWeb.Migrations
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Courses", "DepartmentId", "dbo.Departments");
-            DropForeignKey("dbo.Subscriptions", "ReminderId", "dbo.Reminders");
-            DropForeignKey("dbo.Reminders", "CourseId", "dbo.Courses");
+            DropForeignKey("dbo.Subscriptions", "ReminderId", "dbo.ExamTimeTables");
+            DropForeignKey("dbo.ExamTimeTables", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.Subscriptions", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUsers", "Department_Id", "dbo.Departments");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.Reminders", new[] { "CourseId" });
+            DropIndex("dbo.ExamTimeTables", new[] { "CourseId" });
             DropIndex("dbo.Subscriptions", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.Subscriptions", new[] { "ReminderId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
@@ -174,7 +174,7 @@ namespace CourseMessengerWeb.Migrations
             DropIndex("dbo.Courses", new[] { "DepartmentId" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.ReminderMessages");
-            DropTable("dbo.Reminders");
+            DropTable("dbo.ExamTimeTables");
             DropTable("dbo.Subscriptions");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");

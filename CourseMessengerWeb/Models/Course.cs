@@ -7,7 +7,7 @@ namespace CourseMessengerWeb.Models
     {
         public Course()
         {
-            Reminders = new List<Reminder>();
+            Reminders = new List<ExamTimeTable>();
         }
         [Key]
         public int Id { get; set; }
@@ -19,7 +19,7 @@ namespace CourseMessengerWeb.Models
 
         public string Description { get; set; }
 
-        public virtual  ICollection<Reminder> Reminders { get; set; }
+        public virtual  ICollection<ExamTimeTable> Reminders { get; set; }
 
     }
 }

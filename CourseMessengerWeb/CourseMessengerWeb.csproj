@@ -168,7 +168,8 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\RemindersController.cs" />
+    <Compile Include="Controllers\ExamTimeTableController.cs" />
+    <Compile Include="Controllers\SubscriptionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -188,6 +189,14 @@
     <Compile Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.Designer.cs">
       <DependentUpon>201501151949363_Subscription_Removed_ApplicationUser_FK.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.cs" />
+    <Compile Include="Migrations\201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.Designer.cs">
+      <DependentUpon>201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501231847349_Renamed_ExamInfo_To_ExamTimeTable.cs" />
+    <Compile Include="Migrations\201501231847349_Renamed_ExamInfo_To_ExamTimeTable.Designer.cs">
+      <DependentUpon>201501231847349_Renamed_ExamInfo_To_ExamTimeTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -196,7 +205,7 @@
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Reminder.cs" />
+    <Compile Include="Models\ExamTimeTable.cs" />
     <Compile Include="Models\ReminderMessage.cs" />
     <Compile Include="Models\Subscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -269,13 +278,18 @@
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\Reminders\Create.cshtml" />
-    <Content Include="Views\Reminders\Delete.cshtml" />
-    <Content Include="Views\Reminders\Details.cshtml" />
-    <Content Include="Views\Reminders\Edit.cshtml" />
-    <Content Include="Views\Reminders\Index.cshtml" />
-    <Content Include="Views\Reminders\StudentView.cshtml" />
+    <Content Include="Views\ExamTimeTable\Create.cshtml" />
+    <Content Include="Views\ExamTimeTable\Delete.cshtml" />
+    <Content Include="Views\ExamTimeTable\Details.cshtml" />
+    <Content Include="Views\ExamTimeTable\Edit.cshtml" />
+    <Content Include="Views\ExamTimeTable\Index.cshtml" />
+    <Content Include="Views\Subscriptions\MySubs.cshtml" />
     <Content Include="Views\Account\ConfirmSms.cshtml" />
+    <Content Include="Views\Subscriptions\Create.cshtml" />
+    <Content Include="Views\Subscriptions\Delete.cshtml" />
+    <Content Include="Views\Subscriptions\Details.cshtml" />
+    <Content Include="Views\Subscriptions\Edit.cshtml" />
+    <Content Include="Views\Subscriptions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Elmah\" />
@@ -299,6 +313,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501151949363_Subscription_Removed_ApplicationUser_FK.resx">
       <DependentUpon>201501151949363_Subscription_Removed_ApplicationUser_FK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.resx">
+      <DependentUpon>201501231730120_Models_Renamed_Reminders_To_ExamTimeTable_Others.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501231847349_Renamed_ExamInfo_To_ExamTimeTable.resx">
+      <DependentUpon>201501231847349_Renamed_ExamInfo_To_ExamTimeTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

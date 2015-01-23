@@ -1,0 +1,66 @@
+﻿@model CourseMessengerWeb.Models.Subscription
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Subscription</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IndexNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IndexNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntityId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntityId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubscriptionType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubscriptionType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubscriptionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubscriptionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnsubscribeDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnsubscribeDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

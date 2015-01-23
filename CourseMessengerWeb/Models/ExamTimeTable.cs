@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CourseMessengerWeb.Models
 {
-    public class Reminder
+    public class ExamTimeTable
     {
-        public Reminder()
+        public ExamTimeTable()
         {
             Subscriptions = new List<Subscription>();
         }

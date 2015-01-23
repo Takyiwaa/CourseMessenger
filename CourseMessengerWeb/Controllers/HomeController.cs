@@ -14,7 +14,7 @@ namespace CourseMessengerWeb.Controllers
         {
             if (User.IsInRole(ApplicationRoles.Student))
             {
-                return RedirectToAction("studentview", "reminders");
+                return RedirectToAction("MySubs", "subscriptions");
             }
 
             return View();
