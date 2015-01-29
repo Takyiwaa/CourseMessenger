@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using CourseMessengerWeb.Models;
 using Elmah;
+using Hangfire;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -84,6 +86,8 @@ namespace CourseMessengerWeb.Controllers
                         context.Subscriptions.Add(subscription1);
                         await context.SaveChangesAsync();
                     }
+                   
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
                 else
                 {
@@ -93,6 +97,8 @@ namespace CourseMessengerWeb.Controllers
                         context.Entry(subscription).State = EntityState.Modified;
                         await context.SaveChangesAsync();
                     }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
                
             }
@@ -126,6 +132,8 @@ namespace CourseMessengerWeb.Controllers
                         context.Entry(subscription).State= EntityState.Modified;
                         await context.SaveChangesAsync();
                     }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
 
             }
@@ -150,7 +158,7 @@ namespace CourseMessengerWeb.Controllers
                     db.Subscriptions.Where(s => s.IndexNumber == user.StudentId).GroupBy(g => g.SubscriptionType);
 
 
-                var examReminders = db.ExamTimeTables.Include(t => t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId).ToList();
+                var examReminders = db.ExamTimeTables.Include(t => t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId && r.Status==1).ToList();
 
                 var subscriptionList = new List<SubscriptionViewModel>();
 

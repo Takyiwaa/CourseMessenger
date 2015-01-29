@@ -17,6 +17,8 @@ namespace CourseMessengerWeb.Models
         public int DepartmentId { get; set; }
         public virtual  Department Department { get; set; }
 
+        public bool ShowCourse { get; set; }
+
         public string Description { get; set; }
 
         public virtual  ICollection<ExamTimeTable> Reminders { get; set; }

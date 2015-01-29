@@ -36,6 +36,7 @@ namespace CourseMessengerWeb.Migrations
             var roleStore = new RoleStore<IdentityRole>(context);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
 
+
             foreach (var role in ApplicationRoles.GetAllRoles())
             {
                 if (!roleManager.RoleExists(role))
@@ -45,6 +46,7 @@ namespace CourseMessengerWeb.Migrations
             }
 
 
+
             context.Departments.AddOrUpdate(d => d.Name, new Department
                                                          {
                                                              Name ="Computer Engineering",
@@ -52,41 +54,56 @@ namespace CourseMessengerWeb.Migrations
                                                          });
 
 
-            context.Courses.AddOrUpdate(c=>c.Name,new []{new Course
+            context.Courses.AddOrUpdate(c=>c.Code,new []{new Course
             {
+                Id=1,
                 DepartmentId=1,
                 Code="CPEN 403",
                 Description= "Control Systems",
                 Name= "Control Systems",
-                
+                ShowCourse =true,
             },new Course
             {
+                Id=2,
                 DepartmentId=1,
                 Code = "CPEN 401",
                 Name = "Artificial Intelligence",
-                Description = "Artificial Intelligence"
+                Description = "Artificial Intelligence",
+                ShowCourse=true,
             }});
 
-            context.ExamTimeTables.AddOrUpdate(c=>c.CourseId, new []
-            {
+            //context.ExamTimeTables.AddOrUpdate(c=>c.CourseId, new []
+            //{
                
-                 new ExamTimeTable
-                {
-                    CourseId = 1,
-                    StartTime = DateTime.Now.AddDays(7),
-                    EndTime = DateTime.Now.AddDays(7).AddHours(2),
-                    ReminderType = 1,
-                    Status = 1
-                },  new ExamTimeTable
-                {
-                    CourseId = 2,
-                    StartTime = DateTime.Now.AddDays(6),
-                    EndTime = DateTime.Now.AddDays(6).AddHours(2),
-                    ReminderType = 1,
-                    Status = 1
-                }, 
+            //     new ExamTimeTable
+            //    {
+            //        Id=1,
+            //        CourseId = 1,
+            //        StartTime = DateTime.Now.AddDays(7),
+            //        EndTime = DateTime.Now.AddDays(7).AddHours(2),
+            //        ReminderType = 1,
+            //        Status = 1
+            //    },  new ExamTimeTable
+            //    {
+            //        Id=2,
+            //        CourseId = 2,
+            //        StartTime = DateTime.Now.AddDays(6),
+            //        EndTime = DateTime.Now.AddDays(6).AddHours(2),
+            //        ReminderType = 1,
+            //        Status = 1
+            //    }, 
                 
-            });
+            //});
+
+            //context.ReminderMessages.AddOrUpdate(r=>r.Message,new []
+            //                                                  {
+            //                                                      new ReminderMessage
+            //                                                      {
+            //                                                          Id=1,
+            //                                                          Message = "Hi [Firstname], [Course] starts at [StartTime] and ends at [EndTime]",
+            //                                                          ReminderType = (int)SubscriptionType.ExamTimeTable,
+            //                                                      }
+            //                                                  });
 
         }
     }
