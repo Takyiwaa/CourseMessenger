@@ -45,7 +45,27 @@ namespace CourseMessengerWeb.Migrations
                 }    
             }
 
+            if (!context.Users.Any(u => u.UserName == "admin"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser
+                           {
+                               UserName = "admin",
+                               Email = "admin@coursemessenger.app",
+                               IsStudent = false,
+                               EmailConfirmed = true,
+                               DepartmentId = 1,
+                               Fullname = "Super Admin",
+                               PhoneNumber = "0244123456",
+                               PhoneNumberConfirmed =true,
+                               Status = 1
+                           };
 
+                manager.Create(user, "admin1234!");
+                manager.AddToRole(user.Id, ApplicationRoles.Administrator);
+            }
+           
 
             context.Departments.AddOrUpdate(d => d.Name, new Department
                                                          {

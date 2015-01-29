@@ -191,6 +191,13 @@ namespace CourseMessengerWeb.Controllers
                     Status = 0,
                     DepartmentId = model.DepartmentId
                 };
+
+                var existingUser = UserManager.FindByName(model.StudentId);
+                if (existingUser!=null)
+                {
+                    ModelState.AddModelError("","that Index Number already exists");
+                    return View(model);
+                }
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
