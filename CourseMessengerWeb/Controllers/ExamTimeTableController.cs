@@ -13,13 +13,13 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace CourseMessengerWeb.Controllers
 {
-    [Authorize]
+     [Authorize(Roles = ApplicationRoles.Administrator)]
     public class ExamTimeTableController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ExamTimeTables
-          [Authorize(Roles = ApplicationRoles.Administrator)]
+
         public async Task<ActionResult> Index()
         {
             var reminders = db.ExamTimeTables.Include(r => r.Course);
@@ -27,7 +27,7 @@ namespace CourseMessengerWeb.Controllers
         }
 
         // GET: ExamTimeTables/Details/5
-          [Authorize(Roles = ApplicationRoles.Administrator)]
+     
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -60,10 +60,12 @@ namespace CourseMessengerWeb.Controllers
         }
 
         // GET: ExamTimeTables/Create
-          [Authorize(Roles = ApplicationRoles.Administrator)]
+  
         public ActionResult Create()
         {
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code");
+            ViewBag.fromDate = DateTime.Now.ToString("MM/dd/yyyy");
+            ViewBag.toDate = DateTime.Now.AddHours(2).ToString("MM/dd/yyyy");
             return View();
         }
 
@@ -72,11 +74,13 @@ namespace CourseMessengerWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ApplicationRoles.Administrator)]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] ExamTimeTable examTimeTable)
+
+        public async Task<ActionResult> Create([Bind(Include = "Id,CourseId,StartTime,EndTime")] ExamTimeTable examTimeTable)
         {
             if (ModelState.IsValid)
             {
+                examTimeTable.ReminderType = StatusCodes.ReminderTypes.ExamTimeTable;
+                examTimeTable.Status = StatusCodes.ReminderStatusCodes.Active;
                 db.ExamTimeTables.Add(examTimeTable);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -87,7 +91,7 @@ namespace CourseMessengerWeb.Controllers
         }
 
         // GET: ExamTimeTables/Edit/5
-          [Authorize(Roles = ApplicationRoles.Administrator)]
+
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -100,6 +104,7 @@ namespace CourseMessengerWeb.Controllers
                 return HttpNotFound();
             }
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            ViewBag.Status = new SelectList(StatusCodes.ReminderStatusCodes.All, "Key", "Value", examTimeTable.Status);
             return View(examTimeTable);
         }
 
@@ -108,11 +113,12 @@ namespace CourseMessengerWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ApplicationRoles.Administrator)]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] ExamTimeTable examTimeTable)
+
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,StartTime,EndTime,Status")] ExamTimeTable examTimeTable)
         {
             if (ModelState.IsValid)
             {
+                examTimeTable.ReminderType = StatusCodes.ReminderTypes.ExamTimeTable;
                 db.Entry(examTimeTable).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -122,7 +128,7 @@ namespace CourseMessengerWeb.Controllers
         }
 
         // GET: ExamTimeTables/Delete/5
-          [Authorize(Roles = ApplicationRoles.Administrator)]
+
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,7 +146,7 @@ namespace CourseMessengerWeb.Controllers
         // POST: ExamTimeTables/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ApplicationRoles.Administrator)]
+
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             ExamTimeTable examTimeTable = await db.ExamTimeTables.FindAsync(id);

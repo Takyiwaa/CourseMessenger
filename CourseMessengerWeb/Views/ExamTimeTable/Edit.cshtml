@@ -41,21 +41,29 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Status, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Status, "", new {@class = "text-danger"})
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Status", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ReminderType, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -71,4 +79,37 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+@Scripts.Render("~/bundles/bootstrapdatetime")
+
+<script>
+
+
+        (function () {
+
+
+            var wireEvents = function () {
+
+
+                $('#StartTime').datetimepicker();
+                $('#EndTime').datetimepicker();
+
+                $("#StartTime").on("dp.change", function (e) {
+                    $('#EndTime').data("DateTimePicker").setMinDate(e.date);
+                });
+                $("#EndTime").on("dp.change", function (e) {
+                    $('#StartTime').data("DateTimePicker").setMaxDate(e.date);
+                });
+
+                $('#StartTime').data("DateTimePicker").setDate('@ViewBag.fromdate');
+                $('#EndTime').data("DateTimePicker").setDate('@ViewBag.todate');
+            };
+
+            $(function () {
+                wireEvents();
+
+            });
+        }());
+
+</script>
 }
