@@ -40,6 +40,17 @@ namespace CourseMessengerWeb.Components
             {
                 get { return 1; }
             }
+
+            public static Dictionary<int, string> All
+            {
+                get
+                {
+                    return new Dictionary<int, string>()
+                           {
+                               {ExamTimeTable,"ExamTimeTable"}
+                           };
+                }
+            }
         }
     }
 }

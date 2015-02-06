@@ -104,6 +104,7 @@ namespace CourseMessengerWeb.Controllers
                 return HttpNotFound();
             }
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            ViewBag.Status = new SelectList(StatusCodes.ReminderStatusCodes.All, "Key", "Value", examTimeTable.Status);
             return View(examTimeTable);
         }
 
