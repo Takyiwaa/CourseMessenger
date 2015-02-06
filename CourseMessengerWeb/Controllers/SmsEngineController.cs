@@ -31,6 +31,7 @@ namespace CourseMessengerWeb.Controllers
 
             foreach (var activeSubsciption in activeSubsciptions)
             {
+                //for every active subscription, if the reminder type is that of an exam timetable
                 if (activeSubsciption.SubscriptionType== SubscriptionType.ExamTimeTable)
                 {
                     int remindAt = int.Parse(ConfigurationManager.AppSettings["ExamTimeTable.RemindAt.Minutes"]);
