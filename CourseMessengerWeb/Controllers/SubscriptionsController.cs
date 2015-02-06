@@ -165,6 +165,10 @@ namespace CourseMessengerWeb.Controllers
                 foreach (var examReminder in examReminders)
                 {
 
+                    if (examReminder.StartTime < DateTime.Now)
+                    {
+                        continue;
+                    }
                     var sub = new SubscriptionViewModel
                               {
                                   EntityId = examReminder.Id,
