@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CourseMessengerWeb.Components;
 using CourseMessengerWeb.Models;
 using Elmah;
 using Hangfire;
@@ -22,6 +23,7 @@ namespace CourseMessengerWeb.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Subscriptions
+          [Authorize(Roles = ApplicationRoles.Administrator)]
         public async Task<ActionResult> Index()
         {
             return View(await db.Subscriptions.ToListAsync());

@@ -29,10 +29,11 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Reminders <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="@Url.Action("index","ExamTimeTable")">Exam Time Table</a></li>
-                       
+                                <li><a href="@Url.Action("index", "ExamTimeTable")">Exam Time Table</a></li>
+
                             </ul>
                         </li>
+    <li>@Html.ActionLink("Subscriptions", "Index", "Subscriptions")</li>
                     }
 
                     @* <li>@Html.ActionLink("About", "About", "Home")</li>
