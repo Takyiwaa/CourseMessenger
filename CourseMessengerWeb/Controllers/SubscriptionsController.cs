@@ -104,8 +104,49 @@ namespace CourseMessengerWeb.Controllers
                 }
                
             }
-            
 
+            if (subscriptionType == SubscriptionType.LectureHours)
+            {
+                var lectureHour = await db.LectureHours.FindAsync(id);
+                if (lectureHour == null)
+                {
+                    return HttpNotFound("couldn't find that lecture hour slot");
+                }
+
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id);
+                if (subscription == null)
+                {
+                    var subscription1 = new Subscription
+                    {
+                        IndexNumber = User.Identity.Name,
+                        SubscriptionType = SubscriptionType.LectureHours,
+                        EntityId = lectureHour.Id,
+                        Status = 1,
+                        SubscriptionDate = DateTime.Now,
+                    };
+
+                    using (var context = new ApplicationDbContext())
+                    {
+
+                        context.Subscriptions.Add(subscription1);
+                        await context.SaveChangesAsync();
+                    }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                }
+                else
+                {
+                    subscription.Status = 1;
+                    using (var context = new ApplicationDbContext())
+                    {
+                        context.Entry(subscription).State = EntityState.Modified;
+                        await context.SaveChangesAsync();
+                    }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                }
+
+            }
           
 
             return RedirectToAction("MySubs", "subscriptions");
@@ -140,7 +181,29 @@ namespace CourseMessengerWeb.Controllers
 
             }
 
+            if (subscriptionType == SubscriptionType.LectureHours)
+            {
+                var lectureHour = await db.LectureHours.FindAsync(id);
+                if (lectureHour == null)
+                {
+                    return HttpNotFound("couldn't find that lecture hour slot");
+                }
 
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id);
+                if (subscription != null)
+                {
+                    subscription.Status = 0;
+
+                    using (var context = new ApplicationDbContext())
+                    {
+                        context.Entry(subscription).State = EntityState.Modified;
+                        await context.SaveChangesAsync();
+                    }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                }
+
+            }
 
 
             return RedirectToAction("MySubs", "subscriptions");
@@ -161,6 +224,7 @@ namespace CourseMessengerWeb.Controllers
 
 
                 var examReminders = db.ExamTimeTables.Include(t => t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId && r.Status==1).ToList();
+                var lectureHoursReminders = db.LectureHours.Include(t => t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId && r.Status==1).ToList();
 
                 var subscriptionList = new List<SubscriptionViewModel>();
 
@@ -213,6 +277,58 @@ namespace CourseMessengerWeb.Controllers
                     }
                         
                     
+                }
+
+
+                foreach (var lectureHour in lectureHoursReminders)
+                {
+
+                    //if (lectureHour.StartTime < DateTime.Now.TimeOfDay)
+                    //{
+                    //    continue;
+                    //}
+                    var sub = new SubscriptionViewModel
+                    {
+                        EntityId = lectureHour.Id,
+                        Name = lectureHour.Course.Code + " (" + lectureHour.Course.Name + ")",
+                        SubscriptionType = SubscriptionType.LectureHours,
+                        Status = 0,
+                        Description = lectureHour.Course.Name + " starts at " + lectureHour.StartTime.ToString("t") + " and lasts for" + lectureHour.Duration.ToString("F") + " hours",
+
+                    };
+
+                    foreach (var mySubscription in mySubscriptions)
+                    {
+                        if (mySubscription.Any())
+                        {
+                            if (mySubscription.Key == SubscriptionType.LectureHours)
+                            {
+                                foreach (var subscription in mySubscription)
+                                {
+                                    if (subscription.EntityId == lectureHour.Id)
+                                    {
+                                        sub.EntityId = lectureHour.Id;
+                                        sub.Status = subscription.Status;
+                                        subscriptionList.Add(sub);
+                                    }
+
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            subscriptionList.Add(sub);
+                        }
+
+                    }
+
+                    if (subscriptionList.All(l => l.EntityId != lectureHour.Id))
+                    {
+                        subscriptionList.Add(sub);
+                    }
+
+
                 }
 
 

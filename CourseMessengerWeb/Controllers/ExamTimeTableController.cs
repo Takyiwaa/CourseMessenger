@@ -114,7 +114,7 @@ namespace CourseMessengerWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,StartTime,EndTime,Status")] ExamTimeTable examTimeTable)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] ExamTimeTable examTimeTable)
         {
             if (ModelState.IsValid)
             {
