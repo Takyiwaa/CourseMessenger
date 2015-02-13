@@ -21,5 +21,7 @@ namespace CourseMessengerWeb.Models
         public DbSet<ExamTimeTable> ExamTimeTables { get; set; }
         public DbSet<ReminderMessage> ReminderMessages { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+
+        public DbSet<LectureHour> LectureHours { get; set; }
     }
 }

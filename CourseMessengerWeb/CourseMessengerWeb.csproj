@@ -180,6 +180,7 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LectureHoursController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ExamTimeTableController.cs" />
     <Compile Include="Controllers\SmsEngine.cs" />
@@ -196,6 +197,14 @@
     <Compile Include="Migrations\201501291843547_Courses_AddedField_ShowCourse.Designer.cs">
       <DependentUpon>201501291843547_Courses_AddedField_ShowCourse.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502131731372_created_LectureHour_entity.cs" />
+    <Compile Include="Migrations\201502131731372_created_LectureHour_entity.Designer.cs">
+      <DependentUpon>201502131731372_created_LectureHour_entity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502131745317_LectureHours_added_status.cs" />
+    <Compile Include="Migrations\201502131745317_LectureHours_added_status.Designer.cs">
+      <DependentUpon>201502131745317_LectureHours_added_status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -203,6 +212,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LectureHour.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ExamTimeTable.cs" />
     <Compile Include="Models\ReminderMessage.cs" />
@@ -309,6 +319,11 @@
     <Content Include="Views\Departments\Details.cshtml" />
     <Content Include="Views\Departments\Edit.cshtml" />
     <Content Include="Views\Departments\Index.cshtml" />
+    <Content Include="Views\LectureHours\Create.cshtml" />
+    <Content Include="Views\LectureHours\Delete.cshtml" />
+    <Content Include="Views\LectureHours\Details.cshtml" />
+    <Content Include="Views\LectureHours\Edit.cshtml" />
+    <Content Include="Views\LectureHours\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Elmah\" />
@@ -327,6 +342,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501291843547_Courses_AddedField_ShowCourse.resx">
       <DependentUpon>201501291843547_Courses_AddedField_ShowCourse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502131731372_created_LectureHour_entity.resx">
+      <DependentUpon>201502131731372_created_LectureHour_entity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502131745317_LectureHours_added_status.resx">
+      <DependentUpon>201502131745317_LectureHours_added_status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

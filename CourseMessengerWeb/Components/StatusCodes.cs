@@ -47,9 +47,15 @@ namespace CourseMessengerWeb.Components
                 {
                     return new Dictionary<int, string>()
                            {
-                               {ExamTimeTable,"ExamTimeTable"}
+                               {ExamTimeTable,"Exam Time Table"},
+                               {LectureHours,"Lecture Hours"},
                            };
                 }
+            }
+
+            public static int LectureHours
+            {
+                get { return 2; }
             }
         }
     }

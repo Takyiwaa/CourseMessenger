@@ -1,0 +1,101 @@
+﻿@model CourseMessengerWeb.Models.LectureHour
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>LectureHour</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourseId, "CourseId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CourseId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DayOfWeek, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.DayOfWeek, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DayOfWeek, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+     
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+@Scripts.Render("~/bundles/bootstrapdatetime")
+
+<script>
+
+
+        (function () {
+
+
+            var wireEvents = function () {
+
+
+                $('#StartTime').datetimepicker({
+                    format: 'LT'
+                });
+              //  $('#EndTime').datetimepicker();
+
+                //$("#StartTime").on("dp.change", function (e) {
+                //    $('#EndTime').data("DateTimePicker").setMinDate(e.date);
+                //});
+                //$("#EndTime").on("dp.change", function (e) {
+                //    $('#StartTime').data("DateTimePicker").setMaxDate(e.date);
+                //});
+
+               // $('#StartTime').data("DateTimePicker").setDate('@ViewBag.fromdate');
+               // $('#EndTime').data("DateTimePicker").setDate('@ViewBag.todate');
+            };
+
+            $(function () {
+                wireEvents();
+
+            });
+        }());
+
+</script>
+}
