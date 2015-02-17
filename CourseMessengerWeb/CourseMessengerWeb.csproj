@@ -183,6 +183,7 @@
     <Compile Include="Controllers\LectureHoursController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ExamTimeTableController.cs" />
+    <Compile Include="Controllers\NewsTipsController.cs" />
     <Compile Include="Controllers\SmsEngine.cs" />
     <Compile Include="Controllers\SmsEngineController.cs" />
     <Compile Include="Controllers\SubscriptionsController.cs" />
@@ -205,6 +206,10 @@
     <Compile Include="Migrations\201502131745317_LectureHours_added_status.Designer.cs">
       <DependentUpon>201502131745317_LectureHours_added_status.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502171816153_created_NewsTips_model_cont_view.cs" />
+    <Compile Include="Migrations\201502171816153_created_NewsTips_model_cont_view.Designer.cs">
+      <DependentUpon>201502171816153_created_NewsTips_model_cont_view.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -215,6 +220,7 @@
     <Compile Include="Models\LectureHour.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ExamTimeTable.cs" />
+    <Compile Include="Models\NewsTips.cs" />
     <Compile Include="Models\ReminderMessage.cs" />
     <Compile Include="Models\Subscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -324,6 +330,11 @@
     <Content Include="Views\LectureHours\Details.cshtml" />
     <Content Include="Views\LectureHours\Edit.cshtml" />
     <Content Include="Views\LectureHours\Index.cshtml" />
+    <Content Include="Views\NewsTips\Create.cshtml" />
+    <Content Include="Views\NewsTips\Delete.cshtml" />
+    <Content Include="Views\NewsTips\Details.cshtml" />
+    <Content Include="Views\NewsTips\Edit.cshtml" />
+    <Content Include="Views\NewsTips\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Elmah\" />
@@ -348,6 +359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502131745317_LectureHours_added_status.resx">
       <DependentUpon>201502131745317_LectureHours_added_status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502171816153_created_NewsTips_model_cont_view.resx">
+      <DependentUpon>201502171816153_created_NewsTips_model_cont_view.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

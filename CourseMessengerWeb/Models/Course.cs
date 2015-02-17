@@ -8,6 +8,7 @@ namespace CourseMessengerWeb.Models
         public Course()
         {
             Reminders = new List<ExamTimeTable>();
+            
         }
         [Key]
         public int Id { get; set; }
@@ -23,5 +24,7 @@ namespace CourseMessengerWeb.Models
 
         public virtual  ICollection<ExamTimeTable> Reminders { get; set; }
 
+
+        
     }
 }
