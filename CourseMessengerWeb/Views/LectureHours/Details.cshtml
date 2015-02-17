@@ -1,4 +1,5 @@
-﻿@model CourseMessengerWeb.Models.LectureHour
+﻿@using CourseMessengerWeb.Components
+@model CourseMessengerWeb.Models.LectureHour
 
 @{
     ViewBag.Title = "Details";
@@ -47,9 +48,15 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ReminderType)
+            @StatusCodes.ReminderTypes.All.FirstOrDefault(c => c.Key == Model.ReminderType).Value
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
 
+        <dd>
+            @StatusCodes.ReminderStatusCodes.All.FirstOrDefault(c => c.Key == Model.Status).Value
+        </dd>
     </dl>
 </div>
 <p>

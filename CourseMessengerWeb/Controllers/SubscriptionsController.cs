@@ -25,9 +25,14 @@ namespace CourseMessengerWeb.Controllers
         // GET: Subscriptions
           [Authorize(Roles = ApplicationRoles.Administrator)]
         public async Task<ActionResult> Index()
-        {
-            return View(await db.Subscriptions.ToListAsync());
-        }
+          {
+
+              var subscriptions = db.Subscriptions.GroupBy(s=>s.IndexNumber);
+
+             
+              return View("Index2", subscriptions);
+              //return View(await db.Subscriptions.ToListAsync());
+          }
 
         // GET: Subscriptions/Details/5
         public async Task<ActionResult> Details(int? id)
@@ -70,7 +75,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that exam time table");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
@@ -113,7 +118,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that lecture hour slot");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
@@ -147,7 +152,53 @@ namespace CourseMessengerWeb.Controllers
                 }
 
             }
-          
+            if (subscriptionType == SubscriptionType.NewsTips)
+            {
+                var newsTips = await db.NewsTips.FindAsync(id);
+                if (newsTips == null)
+                {
+                    return HttpNotFound("couldn't find that news tips");
+                }
+
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType==SubscriptionType.NewsTips);
+                if (subscription == null)
+                {
+                    var subscription1 = new Subscription
+                    {
+                        IndexNumber = User.Identity.Name,
+                        SubscriptionType = SubscriptionType.NewsTips,
+                        EntityId = newsTips.Id,
+                        Status = 1,
+                        SubscriptionDate = DateTime.Now,
+                    };
+
+                    using (var context = new ApplicationDbContext())
+                    {
+
+                        context.Subscriptions.Add(subscription1);
+                        await context.SaveChangesAsync();
+                    }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
+                }
+                else
+                {
+                    subscription.Status = 1;
+                    using (var context = new ApplicationDbContext())
+                    {
+                        context.Entry(subscription).State = EntityState.Modified;
+                        await context.SaveChangesAsync();
+                    }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
+                }
+
+            }
+
+            if (User.IsInRole(ApplicationRoles.Administrator))
+            {
+                return RedirectToAction("Index");
+            }
 
             return RedirectToAction("MySubs", "subscriptions");
         }
@@ -165,7 +216,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that exam time table");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable);
                 if (subscription != null)
                 {
                     subscription.Status = 0;
@@ -189,7 +240,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that lecture hour slot");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours);
                 if (subscription != null)
                 {
                     subscription.Status = 0;
@@ -204,8 +255,34 @@ namespace CourseMessengerWeb.Controllers
                 }
 
             }
+            if (subscriptionType == SubscriptionType.NewsTips)
+            {
+                var lectureHour = await db.NewsTips.FindAsync(id);
+                if (lectureHour == null)
+                {
+                    return HttpNotFound("couldn't find that news tips");
+                }
 
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.NewsTips);
+                if (subscription != null)
+                {
+                    subscription.Status = 0;
 
+                    using (var context = new ApplicationDbContext())
+                    {
+                        context.Entry(subscription).State = EntityState.Modified;
+                        await context.SaveChangesAsync();
+                    }
+
+                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
+                }
+
+            }
+
+            if (User.IsInRole(ApplicationRoles.Administrator))
+            {
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("MySubs", "subscriptions");
         }
 
@@ -225,6 +302,7 @@ namespace CourseMessengerWeb.Controllers
 
                 var examReminders = db.ExamTimeTables.Include(t => t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId && r.Status==1).ToList();
                 var lectureHoursReminders = db.LectureHours.Include(t => t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId && r.Status==1).ToList();
+                var newsTipsReminders = db.NewsTips.Where(r => r.Status==1).ToList();
 
                 var subscriptionList = new List<SubscriptionViewModel>();
 
@@ -271,7 +349,7 @@ namespace CourseMessengerWeb.Controllers
                            
                         }
 
-                    if (subscriptionList.All(l => l.EntityId != examReminder.Id))
+                        if (subscriptionList.All(l => l.EntityId != examReminder.Id && l.SubscriptionType == SubscriptionType.ExamTimeTable))
                     {
                         subscriptionList.Add(sub);
                     }
@@ -323,7 +401,7 @@ namespace CourseMessengerWeb.Controllers
 
                     }
 
-                    if (subscriptionList.All(l => l.EntityId != lectureHour.Id))
+                    if (subscriptionList.All(l => l.EntityId != lectureHour.Id && l.SubscriptionType == SubscriptionType.LectureHours))
                     {
                         subscriptionList.Add(sub);
                     }
@@ -331,6 +409,56 @@ namespace CourseMessengerWeb.Controllers
 
                 }
 
+                foreach (var newsTips in newsTipsReminders)
+                {
+
+                    //if (lectureHour.StartTime < DateTime.Now.TimeOfDay)
+                    //{
+                    //    continue;
+                    //}
+                    var sub = new SubscriptionViewModel
+                    {
+                        EntityId = newsTips.Id,
+                        Name = newsTips.Name ,
+                        SubscriptionType = SubscriptionType.NewsTips,
+                        Status = 0,
+                        Description = newsTips.Description + ". Reminder starts at " + newsTips.StartTime.ToString("t") + " everyday.",
+
+                    };
+
+                    foreach (var mySubscription in mySubscriptions)
+                    {
+                        if (mySubscription.Any())
+                        {
+                            if (mySubscription.Key == SubscriptionType.NewsTips)
+                            {
+                                foreach (var subscription in mySubscription)
+                                {
+                                    if (subscription.EntityId == newsTips.Id)
+                                    {
+                                        sub.EntityId = newsTips.Id;
+                                        sub.Status = subscription.Status;
+                                        subscriptionList.Add(sub);
+                                    }
+
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            subscriptionList.Add(sub);
+                        }
+
+                    }
+
+                    if (subscriptionList.All(l => l.EntityId != newsTips.Id && l.SubscriptionType==SubscriptionType.NewsTips))
+                    {
+                        subscriptionList.Add(sub);
+                    }
+
+
+                }
 
                 // var examReminders = db.ExamTimeTables.Include(t=>t.Course).Where(r => r.Course.DepartmentId == user.DepartmentId);
 
@@ -431,5 +559,10 @@ namespace CourseMessengerWeb.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    public class AdminSubscriptionViewModel
+    {
+        public string Student { get; set; }
     }
 }

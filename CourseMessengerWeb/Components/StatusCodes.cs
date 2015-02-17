@@ -49,6 +49,7 @@ namespace CourseMessengerWeb.Components
                            {
                                {ExamTimeTable,"Exam Time Table"},
                                {LectureHours,"Lecture Hours"},
+                               {NewsTips,"News Tips"},
                            };
                 }
             }
@@ -56,6 +57,11 @@ namespace CourseMessengerWeb.Components
             public static int LectureHours
             {
                 get { return 2; }
+            }
+
+            public static int NewsTips
+            {
+                get { return 3; }
             }
         }
     }

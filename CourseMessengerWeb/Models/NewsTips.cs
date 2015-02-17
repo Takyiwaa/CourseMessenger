@@ -23,6 +23,7 @@ namespace CourseMessengerWeb.Models
 
         public TimeSpan StartTime { get; set; }
 
+        
         public string Description { get; set; }
 
         public virtual ICollection<Subscription> Subscriptions { get; set; }
