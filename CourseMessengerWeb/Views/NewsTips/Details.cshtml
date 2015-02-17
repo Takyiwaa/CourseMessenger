@@ -1,4 +1,5 @@
-﻿@model CourseMessengerWeb.Models.NewsTips
+﻿@using CourseMessengerWeb.Components
+@model CourseMessengerWeb.Models.NewsTips
 
 @{
     ViewBag.Title = "Details";
@@ -10,12 +11,38 @@
     <h4>NewsTips</h4>
     <hr />
     <dl class="dl-horizontal">
+  
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.ReminderType)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ReminderType)
+            @StatusCodes.ReminderTypes.All.FirstOrDefault(c => c.Key == Model.ReminderType).Value
         </dd>
 
         <dt>
@@ -23,7 +50,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Status)
+            @StatusCodes.ReminderStatusCodes.All.FirstOrDefault(c => c.Key == Model.Status).Value
         </dd>
 
     </dl>

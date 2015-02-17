@@ -12,7 +12,6 @@ using CourseMessengerWeb.Models;
 
 namespace CourseMessengerWeb.Controllers
 {
-    [Authorize(Roles = ApplicationRoles.Administrator)]
     public class NewsTipsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -49,10 +48,23 @@ namespace CourseMessengerWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ReminderType,Status")] NewsTips newsTips)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,StartTime,Description")] NewsTips newsTips)
         {
+            var req = Request;
+
+
+            var startTime = req["StartTime"];
+
+
+            var newTime = DateTime.Parse(startTime);
+
+            newsTips.StartTime = newTime.TimeOfDay;
+
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
+                newsTips.Status = 1;
+                newsTips.ReminderType = StatusCodes.ReminderTypes.NewsTips;
                 db.NewsTips.Add(newsTips);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -73,6 +85,8 @@ namespace CourseMessengerWeb.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Status = new SelectList(StatusCodes.ReminderStatusCodes.All, "Key", "Value", newsTips.Status);
             return View(newsTips);
         }
 
@@ -81,8 +95,18 @@ namespace CourseMessengerWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ReminderType,Status")] NewsTips newsTips)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ReminderType,Name,StartTime,Description,Status")] NewsTips newsTips)
         {
+            var req = Request;
+
+
+            var startTime = req["StartTime"];
+
+
+            var newTime = DateTime.Parse(startTime);
+
+            newsTips.StartTime = newTime.TimeOfDay;
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
                 db.Entry(newsTips).State = EntityState.Modified;
