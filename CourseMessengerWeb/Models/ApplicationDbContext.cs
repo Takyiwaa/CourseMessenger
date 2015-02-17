@@ -23,5 +23,7 @@ namespace CourseMessengerWeb.Models
         public DbSet<Subscription> Subscriptions { get; set; }
 
         public DbSet<LectureHour> LectureHours { get; set; }
+
+        public System.Data.Entity.DbSet<CourseMessengerWeb.Models.NewsTips> NewsTips { get; set; }
     }
 }
