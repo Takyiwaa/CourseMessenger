@@ -393,6 +393,12 @@ namespace CourseMessengerWeb.Controllers
                                 }
 
                             }
+                            else
+                            {
+                                sub.EntityId = lectureHour.Id;
+                                sub.Status = 0;
+                                subscriptionList.Add(sub);
+                            }
                         }
                         else
                         {
@@ -443,6 +449,12 @@ namespace CourseMessengerWeb.Controllers
 
                                 }
 
+                            }
+                            else
+                            {
+                                sub.EntityId = newsTips.Id;
+                                sub.Status = 0;
+                                subscriptionList.Add(sub);
                             }
                         }
                         else
