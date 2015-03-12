@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -31,6 +32,12 @@ namespace CourseMessengerWeb.Models
 
         public int DepartmentId { get; set; }
         public virtual  Department Department { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime? DateModified { get; set; }
+
+
 
         public virtual ICollection<Subscription> Subscriptions { get; set; }
     }

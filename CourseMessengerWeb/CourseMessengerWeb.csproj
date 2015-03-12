@@ -210,6 +210,10 @@
     <Compile Include="Migrations\201502171816153_created_NewsTips_model_cont_view.Designer.cs">
       <DependentUpon>201502171816153_created_NewsTips_model_cont_view.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503121752176_ApplicationUser_Added_DateFields.cs" />
+    <Compile Include="Migrations\201503121752176_ApplicationUser_Added_DateFields.Designer.cs">
+      <DependentUpon>201503121752176_ApplicationUser_Added_DateFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -363,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502171816153_created_NewsTips_model_cont_view.resx">
       <DependentUpon>201502171816153_created_NewsTips_model_cont_view.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503121752176_ApplicationUser_Added_DateFields.resx">
+      <DependentUpon>201503121752176_ApplicationUser_Added_DateFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

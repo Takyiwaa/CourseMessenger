@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CourseMessengerWeb.Models;
+using Hangfire;
+using Microsoft.SqlServer.Server;
 
 namespace CourseMessengerWeb.Controllers
 {
@@ -189,7 +191,8 @@ namespace CourseMessengerWeb.Controllers
                     Fullname = model.Fullname,
                     StudentId = model.StudentId,
                     Status = 0,
-                    DepartmentId = model.DepartmentId
+                    DepartmentId = model.DepartmentId,
+                    DateCreated =DateTime.Now
                 };
 
                 var existingUser = UserManager.FindByName(model.StudentId);
@@ -210,12 +213,16 @@ namespace CourseMessengerWeb.Controllers
                      string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                      string phoneCode = await UserManager.GenerateChangePhoneNumberTokenAsync(user.Id, user.PhoneNumber);
 
-                     await UserManager.SendSmsAsync(user.Id, "Your confirmation token is: " + phoneCode);
-                    
+                   
+
+                     BackgroundJob.Schedule(() => SendSms(user.PhoneNumber, "Your confirmation token is: " + phoneCode),new TimeSpan(0,0,1,0)
+                                           );
+
                      var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await
-                        UserManager.SendEmailAsync(user.Id, "Confirm Your Account",
-                            "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                     BackgroundJob.Schedule(() => SendEmail(user.Email, callbackUrl), new TimeSpan(0, 0, 1, 0)
+                                          );
+              
                     
                    
                     ViewBag.Name = model.Fullname;
@@ -230,6 +237,20 @@ namespace CourseMessengerWeb.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        public static void SendSms(string id, string message)
+        {
+              new SmsModule().SendSms(id, message);
+        }
+
+        public  static void SendEmail(string userId,string callback)
+        {
+          
+            
+                new EmailModule().SendEmail(userId, "Confirm Your Account",
+                    "Please confirm your account by clicking <a href=\"" + callback + "\">here</a>");
+        }
+
 
         //
         // GET: /Account/ConfirmEmail

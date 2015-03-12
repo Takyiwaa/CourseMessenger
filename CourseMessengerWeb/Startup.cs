@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using CourseMessengerWeb.Controllers;
+using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.Owin;
 using Owin;
@@ -16,7 +17,11 @@ namespace CourseMessengerWeb
             {
                 config.UseSqlServerStorage("DefaultConnection");
                 config.UseServer();
+                
             });
+
+            BackgroundJob.Enqueue(() =>
+               new SmsEngine().NotifyStudents());
         }
     }
 }

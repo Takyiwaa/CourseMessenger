@@ -59,7 +59,8 @@ namespace CourseMessengerWeb.Migrations
                                Fullname = "Super Admin",
                                PhoneNumber = "0244123456",
                                PhoneNumberConfirmed =true,
-                               Status = 1
+                               Status = 1,
+                               DateCreated = DateTime.Now,
                            };
 
                 manager.Create(user, "admin1234!");
