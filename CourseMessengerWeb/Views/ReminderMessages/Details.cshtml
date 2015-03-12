@@ -1,0 +1,35 @@
+﻿@using CourseMessengerWeb.Components
+@model CourseMessengerWeb.Models.ReminderMessage
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ReminderMessage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReminderType)
+        </dt>
+
+        <dd>
+            @(StatusCodes.ReminderTypes.All.FirstOrDefault(k => k.Key == Model.ReminderType).Value)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

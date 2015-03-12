@@ -184,7 +184,8 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ExamTimeTableController.cs" />
     <Compile Include="Controllers\NewsTipsController.cs" />
-    <Compile Include="Controllers\SmsEngine.cs" />
+    <Compile Include="Controllers\ReminderMessagesController.cs" />
+    <Compile Include="Components\SmsEngine.cs" />
     <Compile Include="Controllers\SmsEngineController.cs" />
     <Compile Include="Controllers\SubscriptionsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -340,6 +341,11 @@
     <Content Include="Views\NewsTips\Edit.cshtml" />
     <Content Include="Views\NewsTips\Index.cshtml" />
     <Content Include="Views\Subscriptions\Index2.cshtml" />
+    <Content Include="Views\ReminderMessages\Create.cshtml" />
+    <Content Include="Views\ReminderMessages\Delete.cshtml" />
+    <Content Include="Views\ReminderMessages\Details.cshtml" />
+    <Content Include="Views\ReminderMessages\Edit.cshtml" />
+    <Content Include="Views\ReminderMessages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Elmah\" />

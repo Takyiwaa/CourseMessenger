@@ -75,7 +75,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that exam time table");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable && e.IndexNumber==User.Identity.Name);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
@@ -94,7 +94,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
                    
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+              
                 }
                 else
                 {
@@ -105,7 +105,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                   // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
                
             }
@@ -118,7 +118,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that lecture hour slot");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours && e.IndexNumber == User.Identity.Name);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
@@ -137,7 +137,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                   // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
                 else
                 {
@@ -148,7 +148,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                   // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
 
             }
@@ -160,7 +160,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that news tips");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType==SubscriptionType.NewsTips);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.NewsTips && e.IndexNumber == User.Identity.Name);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
@@ -179,7 +179,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
+                 //   RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
                 }
                 else
                 {
@@ -190,7 +190,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
+                   // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
                 }
 
             }

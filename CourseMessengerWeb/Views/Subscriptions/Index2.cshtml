@@ -38,16 +38,19 @@
 
                                 <td>@subscription.SubscriptionType</td>
                                 <td>@subscription.EntityId</td>
-                                @if (subscription.Status == 1)
-                                {
+                                <td>
+                                    @if (subscription.Status == 1)
+                                    {
                                     <td><a href="@Url.Action("unsubscribe", new {id = @subscription.EntityId, subscriptionType = subscription.SubscriptionType})" role="button" class="btn btn-danger">Unsubscribe</a></td>
 
-                                }
-                                else
-                                {
-                                    <td><a href="@Url.Action("subscribe", new {id = @subscription.EntityId, subscriptionType = subscription.SubscriptionType})" role="button" class="btn btn-success">Subscribe</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a href="@Url.Action("subscribe", new {id = @subscription.EntityId, subscriptionType = subscription.SubscriptionType})" role="button" class="btn btn-success">Subscribe</a></td>
 
-                                }
+                                    }
+                                </td>
+                                
                                 
 
                             </tr>
