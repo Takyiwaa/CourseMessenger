@@ -1,4 +1,6 @@
-﻿using CourseMessengerWeb.Controllers;
+﻿using System.Configuration;
+using CourseMessengerWeb.Components;
+using CourseMessengerWeb.Controllers;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.Owin;
@@ -20,8 +22,13 @@ namespace CourseMessengerWeb
                 
             });
 
-            BackgroundJob.Enqueue(() =>
-               new SmsEngine().NotifyStudents());
+           
+
+            RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+
+            RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+
+            RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
         }
     }
 }
