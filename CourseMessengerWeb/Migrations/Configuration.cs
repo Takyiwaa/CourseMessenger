@@ -33,6 +33,14 @@ namespace CourseMessengerWeb.Migrations
             //    );
             //
 
+            context.Departments.AddOrUpdate(d => d.Name, new Department
+            {
+                Id = 1,
+                Name = "Computer Engineering",
+
+            });
+
+
             var roleStore = new RoleStore<IdentityRole>(context);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
 
@@ -68,11 +76,7 @@ namespace CourseMessengerWeb.Migrations
             }
            
 
-            context.Departments.AddOrUpdate(d => d.Name, new Department
-                                                         {
-                                                             Name ="Computer Engineering",
-                                                             
-                                                         });
+           
 
 
             context.Courses.AddOrUpdate(c=>c.Code,new []{new Course
