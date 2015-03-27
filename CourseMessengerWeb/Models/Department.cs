@@ -13,6 +13,7 @@ namespace CourseMessengerWeb.Models
         [Key]
         public int Id { get; set; }
 
+        [Required (ErrorMessage = "enter a name for the department")]
         public string Name { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }
