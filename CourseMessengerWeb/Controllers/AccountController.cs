@@ -247,8 +247,8 @@ namespace CourseMessengerWeb.Controllers
         {
           
             
-                new EmailModule().SendEmail(userId, "Confirm Your Account",
-                    "Please confirm your account by clicking <a href=\"" + callback + "\">here</a>");
+                new EmailModule().SendEmail(userId, 
+                    "Please confirm your account by clicking <a href=\"" + callback + "\">here</a>","Confirm Your Account");
         }
 
 
