@@ -21,13 +21,7 @@
                 @Html.DropDownList("CourseId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
             </div>
-        </div> <div class="form-group">
-            @Html.LabelFor(model => model.Course.Name,  htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Course.Name, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        </div> 
 
         <div class="form-group">
             @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -70,9 +64,7 @@
     </div>
 }
 
-<div>
-    <a role="button" href="@Url.Action("Index")" class="btn btn-default"><span class="glyphicon glyphicon-backward"></span>  Back </a>
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

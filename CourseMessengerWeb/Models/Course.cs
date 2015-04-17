@@ -18,6 +18,13 @@ namespace CourseMessengerWeb.Models
         public int DepartmentId { get; set; }
         public virtual  Department Department { get; set; }
 
+        public string CourseDescription
+        {
+            get
+            {
+                return (Name + " (" + Code + ")");
+            }
+        }
         public bool ShowCourse { get; set; }
 
         public string Description { get; set; }

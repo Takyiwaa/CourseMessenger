@@ -350,6 +350,7 @@
     <Content Include="Views\ReminderMessages\Details.cshtml" />
     <Content Include="Views\ReminderMessages\Edit.cshtml" />
     <Content Include="Views\ReminderMessages\Index.cshtml" />
+    <Content Include="Views\Subscriptions\Index3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Elmah\" />

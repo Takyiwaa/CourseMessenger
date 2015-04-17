@@ -27,11 +27,58 @@ namespace CourseMessengerWeb.Controllers
         public async Task<ActionResult> Index()
           {
 
-              var subscriptions = db.Subscriptions.GroupBy(s=>s.IndexNumber);
+              var subscriptionsByStudents = db.Subscriptions.GroupBy(s=>s.IndexNumber);
 
+
+              var subscriptionsLists = new List<SubscriptionItem>();
+              subscriptionsLists.Clear();
+              foreach (var subscriptions in subscriptionsByStudents)
+              {
+                  var item1 = subscriptions;
+                  var subscriptionItem = new SubscriptionItem();
+                  
+                  subscriptionItem.StudentDetails = await db.Users.FirstOrDefaultAsync(s => s.StudentId == item1.Key);
+              
+                  foreach (var subscription in subscriptions)
+                  {
+                      string description = string.Empty;
+                      var subType = new StudentSubscriptionType
+                      {
+                          SubscriptionTypeName = subscription.SubscriptionType,
+                          Status = subscription.Status,
+                          EntityId = subscription.EntityId
+                      };
+                      switch (subscription.SubscriptionType)
+                      {
+                          case SubscriptionType.ExamTimeTable:
+                              var exam = await db.ExamTimeTables.FirstOrDefaultAsync(e => e.Id == subType.EntityId);
+                              description = exam.Course.Name + " (" + exam.Course.Code + ")";
+                        
+                              break;
+                          case SubscriptionType.LectureHours:
+                               var lectureHour = await db.LectureHours.FirstOrDefaultAsync(e => e.Id == subType.EntityId);
+                              description = lectureHour.Course.Name + " (" + lectureHour.Course.Code + ")";
+                              break;
+                          case SubscriptionType.LectureMaterialUrl:
+                              break;
+                          case SubscriptionType.NewsTips:
+                               var newsTip = await db.NewsTips.FirstOrDefaultAsync(e => e.Id == subType.EntityId);
+                              description = newsTip.Name + " (" + newsTip.Description + ")";
+                              break;
+                          default:
+                              throw new ArgumentOutOfRangeException();
+                      }
+                      subType.Description = description;
+                      subscriptionItem.SubscriptionLists.Add(subType);
+                  }
+
+                  subscriptionsLists.Add(subscriptionItem);
+
+              }
              
-              return View("Index2", subscriptions);
-              //return View(await db.Subscriptions.ToListAsync());
+              //return View("Index2", subscriptionsByStudents);
+              return View("Index3", subscriptionsLists);
+   
           }
 
         // GET: Subscriptions/Details/5
@@ -349,7 +396,7 @@ namespace CourseMessengerWeb.Controllers
                            
                         }
 
-                        if (subscriptionList.All(l => l.EntityId != examReminder.Id && l.SubscriptionType == SubscriptionType.ExamTimeTable))
+                        if (!subscriptionList.Any(l => l.EntityId == examReminder.Id && l.SubscriptionType == SubscriptionType.ExamTimeTable))
                     {
                         subscriptionList.Add(sub);
                     }
@@ -402,12 +449,13 @@ namespace CourseMessengerWeb.Controllers
                         }
                         else
                         {
+
                             subscriptionList.Add(sub);
                         }
 
                     }
 
-                    if (subscriptionList.All(l => l.EntityId != lectureHour.Id && l.SubscriptionType == SubscriptionType.LectureHours))
+                    if (!subscriptionList.Any(l => l.EntityId == lectureHour.Id && l.SubscriptionType == SubscriptionType.LectureHours))
                     {
                         subscriptionList.Add(sub);
                     }
@@ -571,6 +619,25 @@ namespace CourseMessengerWeb.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    public class StudentSubscriptionType
+    {
+        public SubscriptionType SubscriptionTypeName { get; set; }
+        public int Status { get; set; }
+        public int EntityId { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class SubscriptionItem
+    {
+        public SubscriptionItem()
+        {
+            SubscriptionLists = new List<StudentSubscriptionType>();
+            StudentDetails = new ApplicationUser();
+        }
+        public ApplicationUser StudentDetails { get; set; }
+        public List<StudentSubscriptionType> SubscriptionLists { get; set; }
     }
 
     public class AdminSubscriptionViewModel

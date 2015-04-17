@@ -43,7 +43,7 @@ namespace CourseMessengerWeb.Controllers
         // GET: LectureHours/Create
         public ActionResult Create()
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code");
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription");
             return View();
         }
 
@@ -75,7 +75,7 @@ namespace CourseMessengerWeb.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", lectureHour.CourseId);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription", lectureHour.CourseId);
             return View(lectureHour);
         }
 
@@ -92,7 +92,7 @@ namespace CourseMessengerWeb.Controllers
                 return HttpNotFound();
             }
             ViewBag.Status = new SelectList(StatusCodes.ReminderStatusCodes.All, "Key", "Value", lectureHour.Status);
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", lectureHour.CourseId);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription", lectureHour.CourseId);
             return View(lectureHour);
         }
 
@@ -120,7 +120,7 @@ namespace CourseMessengerWeb.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", lectureHour.CourseId);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription", lectureHour.CourseId);
             return View(lectureHour);
         }
 
