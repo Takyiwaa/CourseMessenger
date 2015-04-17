@@ -5,10 +5,10 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>All Messages: @ViewBag.Count</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a title="add new lecture detail" href="@Url.Action("Create")" role="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a>
 </p>
 <table class="table">
     <tr>
@@ -30,9 +30,15 @@
             @(StatusCodes.ReminderTypes.All.FirstOrDefault(k=>k.Key==item.ReminderType).Value)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a title="edit @item.Message" href="@Url.Action("Edit", new { id = item.Id })">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a> |
+            <a title="view @item.Message details" href="@Url.Action("Details",new{id=item.Id})">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </a> |
+            <a title="delete @item.Message" href="@Url.Action("Delete", new { id = item.Id })">
+                <span class="glyphicon glyphicon-trash"></span>
+            </a> 
         </td>
     </tr>
 }

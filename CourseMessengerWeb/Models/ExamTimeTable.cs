@@ -16,6 +16,14 @@ namespace CourseMessengerWeb.Models
         public int CourseId { get; set; }
         public virtual Course Course { get; set; }
 
+        public string CourseDescription
+        {
+            get
+            {
+                return (Course != null ? Course.Name + " (" + Course.Code + ")":"");
+            }
+        }
+
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 

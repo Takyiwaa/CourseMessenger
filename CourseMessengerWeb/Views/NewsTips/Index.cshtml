@@ -5,10 +5,11 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>All News Tips: @ViewBag.Count</h2>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a title="add current news tip" href="@Url.Action("Create")" role="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a>
 </p>
 <table class="table">
     <tr>
@@ -41,14 +42,23 @@
         <td>
             @Html.DisplayFor(modelItem => item.StartTime)
         </td>
-    
-        <td>
+       
+        
+        <td> 
+       
+            
             @StatusCodes.ReminderStatusCodes.All.FirstOrDefault(c => c.Key == item.Status).Value
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a title="edit @item.Name" href="@Url.Action("Edit", new { id = item.Id })">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a> |
+            <a title="view @item.Name details" href="@Url.Action("Details",new{id=item.Id})">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </a> |
+            <a title="delete @item.Name" href="@Url.Action("Delete", new { id = item.Id })">
+                <span class="glyphicon glyphicon-trash"></span>
+            </a> 
         </td>
     </tr>
 }

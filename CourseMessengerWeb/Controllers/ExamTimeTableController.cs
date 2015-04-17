@@ -22,6 +22,7 @@ namespace CourseMessengerWeb.Controllers
 
         public async Task<ActionResult> Index()
         {
+            ViewBag.Count = await db.ExamTimeTables.CountAsync();
             var reminders = db.ExamTimeTables.Include(r => r.Course);
             return View(await reminders.ToListAsync());
         }
@@ -63,7 +64,8 @@ namespace CourseMessengerWeb.Controllers
   
         public ActionResult Create()
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code");
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription" );
+          
             ViewBag.fromDate = DateTime.Now.ToString("MM/dd/yyyy");
             ViewBag.toDate = DateTime.Now.AddHours(2).ToString("MM/dd/yyyy");
             return View();
@@ -75,7 +77,7 @@ namespace CourseMessengerWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<ActionResult> Create([Bind(Include = "Id,CourseId,StartTime,EndTime")] ExamTimeTable examTimeTable)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CourseId,Name,StartTime,EndTime")] ExamTimeTable examTimeTable)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +88,7 @@ namespace CourseMessengerWeb.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription", examTimeTable.CourseId);
             return View(examTimeTable);
         }
 
@@ -103,7 +105,7 @@ namespace CourseMessengerWeb.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription", examTimeTable.CourseId);
             ViewBag.Status = new SelectList(StatusCodes.ReminderStatusCodes.All, "Key", "Value", examTimeTable.Status);
             return View(examTimeTable);
         }
@@ -114,7 +116,7 @@ namespace CourseMessengerWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,StartTime,EndTime,Status,ReminderType")] ExamTimeTable examTimeTable)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,Name,StartTime,EndTime,Status,ReminderType")] ExamTimeTable examTimeTable)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +125,7 @@ namespace CourseMessengerWeb.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Code", examTimeTable.CourseId);
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseDescription", examTimeTable.CourseId);
             return View(examTimeTable);
         }
 

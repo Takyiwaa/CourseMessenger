@@ -47,14 +47,15 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <button type="submit" value="Save" class="btn btn-success"> <span class="glyphicon glyphicon-floppy-saved"></span> Add</button> or
+                <a role="button" href="@Url.Action("Index")" value="Cancel" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>  Cancel </a>
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a role="button" href="@Url.Action("Index")" class="btn btn-default"><span class="glyphicon glyphicon-backward"></span>  Back </a>
 </div>
 
 @section Scripts {

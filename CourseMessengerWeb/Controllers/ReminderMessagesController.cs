@@ -20,6 +20,7 @@ namespace CourseMessengerWeb.Controllers
         // GET: ReminderMessages
         public async Task<ActionResult> Index()
         {
+            ViewBag.Count = await db.ReminderMessages.CountAsync();
             return View(await db.ReminderMessages.ToListAsync());
         }
 

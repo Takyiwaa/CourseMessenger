@@ -20,6 +20,7 @@ namespace CourseMessengerWeb.Controllers
         // GET: Courses
         public async Task<ActionResult> Index()
         {
+            ViewBag.Count = await db.Courses.CountAsync();
             var courses = db.Courses.Include(c => c.Department);
             return View(await courses.ToListAsync());
         }

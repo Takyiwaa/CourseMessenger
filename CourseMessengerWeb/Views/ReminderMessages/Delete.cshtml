@@ -33,8 +33,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <button type="submit" value="Save" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"></span> Yes</button> or
+            <a role="button" href="@Url.Action("Index")" value="Cancel" class="btn btn-info"><span class="glyphicon glyphicon-remove"></span>  No </a>
         </div>
     }
 </div>

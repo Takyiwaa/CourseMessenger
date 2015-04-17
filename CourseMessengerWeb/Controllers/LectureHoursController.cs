@@ -20,6 +20,7 @@ namespace CourseMessengerWeb.Controllers
         // GET: LectureHours
         public async Task<ActionResult> Index()
         {
+            ViewBag.Count = await db.LectureHours.CountAsync();
             var lectureHours = db.LectureHours.Include(l => l.Course);
             return View(await lectureHours.ToListAsync());
         }

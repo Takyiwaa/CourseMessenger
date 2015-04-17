@@ -19,6 +19,7 @@ namespace CourseMessengerWeb.Controllers
         // GET: NewsTips
         public async Task<ActionResult> Index()
         {
+            ViewBag.Count = await db.NewsTips.CountAsync();
             return View(await db.NewsTips.ToListAsync());
         }
 
