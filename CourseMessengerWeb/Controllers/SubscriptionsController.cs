@@ -36,8 +36,8 @@ namespace CourseMessengerWeb.Controllers
               {
                   var item1 = subscriptions;
                   var subscriptionItem = new SubscriptionItem();
-                  
-                  subscriptionItem.StudentDetails = await db.Users.FirstOrDefaultAsync(s => s.StudentId == item1.Key);
+
+                  subscriptionItem.StudentDetails = await db.Users.FirstOrDefaultAsync(s => s.UserName == item1.Key);
               
                   foreach (var subscription in subscriptions)
                   {
@@ -110,10 +110,14 @@ namespace CourseMessengerWeb.Controllers
         }
 
         [Authorize(Roles = "Administrator,Student")]
-        public async Task<ActionResult> Subscribe(int id,SubscriptionType subscriptionType)
+        public async Task<ActionResult> Subscribe(int id,SubscriptionType subscriptionType,string user="")
         {
 
-           
+
+            if (string.IsNullOrEmpty(user))
+            {
+                user = User.Identity.Name;
+            }
             if (subscriptionType== SubscriptionType.ExamTimeTable)
             {
                 var examInfo = await db.ExamTimeTables.FindAsync(id);
@@ -122,12 +126,12 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that exam time table");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable && e.IndexNumber==User.Identity.Name);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable && e.IndexNumber==user);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
                                         {
-                                            IndexNumber = User.Identity.Name,
+                                            IndexNumber = user,
                                             SubscriptionType = SubscriptionType.ExamTimeTable,
                                             EntityId = examInfo.Id,
                                             Status = 1,
@@ -165,12 +169,12 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that lecture hour slot");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours && e.IndexNumber == User.Identity.Name);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours && e.IndexNumber == user);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
                     {
-                        IndexNumber = User.Identity.Name,
+                        IndexNumber = user,
                         SubscriptionType = SubscriptionType.LectureHours,
                         EntityId = lectureHour.Id,
                         Status = 1,
@@ -207,12 +211,12 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that news tips");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.NewsTips && e.IndexNumber == User.Identity.Name);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.NewsTips && e.IndexNumber == user);
                 if (subscription == null)
                 {
                     var subscription1 = new Subscription
                     {
-                        IndexNumber = User.Identity.Name,
+                        IndexNumber = user,
                         SubscriptionType = SubscriptionType.NewsTips,
                         EntityId = newsTips.Id,
                         Status = 1,
@@ -252,8 +256,12 @@ namespace CourseMessengerWeb.Controllers
 
 
         [Authorize(Roles = "Administrator,Student")]
-        public async Task<ActionResult> Unsubscribe(int id, SubscriptionType subscriptionType)
+        public async Task<ActionResult> Unsubscribe(int id, SubscriptionType subscriptionType,string user="")
         {
+            if (string.IsNullOrEmpty(user))
+            {
+                user = User.Identity.Name;
+            }
 
             if (subscriptionType == SubscriptionType.ExamTimeTable)
             {
@@ -263,7 +271,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that exam time table");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable && e.IndexNumber==user);
                 if (subscription != null)
                 {
                     subscription.Status = 0;
@@ -287,7 +295,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that lecture hour slot");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours && e.IndexNumber == user);
                 if (subscription != null)
                 {
                     subscription.Status = 0;
@@ -310,7 +318,7 @@ namespace CourseMessengerWeb.Controllers
                     return HttpNotFound("couldn't find that news tips");
                 }
 
-                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.NewsTips);
+                var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.NewsTips && e.IndexNumber == user);
                 if (subscription != null)
                 {
                     subscription.Status = 0;
@@ -388,6 +396,12 @@ namespace CourseMessengerWeb.Controllers
                                     }
 
                                 }
+                                else
+                                {
+                                    sub.EntityId = examReminder.Id;
+                                    sub.Status = 0;
+                                     subscriptionList.Add(sub);
+                                }
                             }
                             else
                             {
@@ -443,8 +457,8 @@ namespace CourseMessengerWeb.Controllers
                             else
                             {
                                 sub.EntityId = lectureHour.Id;
-                                sub.Status = 0;
-                                subscriptionList.Add(sub);
+                                //sub.Status = 0;
+                               // subscriptionList.Add(sub);
                             }
                         }
                         else
@@ -501,8 +515,8 @@ namespace CourseMessengerWeb.Controllers
                             else
                             {
                                 sub.EntityId = newsTips.Id;
-                                sub.Status = 0;
-                                subscriptionList.Add(sub);
+                              //  sub.Status = 0;
+                               // subscriptionList.Add(sub);
                             }
                         }
                         else

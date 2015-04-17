@@ -11,7 +11,7 @@
 
 @if (subscriptionGroup.Any())
 {
-    <h2>Select to Subscribe</h2>
+    <h2>My Subscriptions</h2>
 
     <div class="col-md-12">
 
@@ -39,7 +39,7 @@
 
                                 <td>@item.Name</td>
                                 <td>@item.Description</td>
-
+                             
                                 @if (item.Status == 1)
                                 {
                                     <td><a href="@Url.Action("unsubscribe", new {id = @item.EntityId, subscriptionType = subscriptionItem.Key})" role="button" class="btn btn-danger">Unsubscribe</a></td>

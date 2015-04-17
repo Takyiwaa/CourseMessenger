@@ -16,7 +16,7 @@
         {
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    @*<h3 class="panel-title">@subscriptions.StudentDetails.Fullname (@subscriptions.StudentDetails.StudentId)</h3>*@
+                    <h3 class="panel-title">@subscriptions.StudentDetails.Fullname (@subscriptions.StudentDetails.StudentId)</h3>
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped table-hover ">
@@ -41,12 +41,12 @@
                                 <td>
                                     @if (subscription.Status == 1)
                                     {
-                                    <td><a href="@Url.Action("unsubscribe", new {id = @subscription.EntityId, subscriptionType = subscription.SubscriptionTypeName})" role="button" class="btn btn-danger">Unsubscribe</a></td>
+                                    <td><a href="@Url.Action("unsubscribe", new {id = @subscription.EntityId, subscriptionType = subscription.SubscriptionTypeName, user=subscriptions.StudentDetails.StudentId})" role="button" class="btn btn-danger">Unsubscribe</a></td>
 
                                     }
                                     else
                                     {
-                                        <td><a href="@Url.Action("subscribe", new {id = @subscription.EntityId, subscriptionType = subscription.SubscriptionTypeName})" role="button" class="btn btn-success">Subscribe</a></td>
+                                        <td><a href="@Url.Action("subscribe", new { id = @subscription.EntityId, subscriptionType = subscription.SubscriptionTypeName, user = subscriptions.StudentDetails.StudentId })" role="button" class="btn btn-success">Subscribe</a></td>
 
                                     }
                                 </td>
