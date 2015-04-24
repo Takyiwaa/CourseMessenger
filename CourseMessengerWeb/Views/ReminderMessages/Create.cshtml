@@ -31,6 +31,10 @@
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+                <div>
+                    <span>Accepted placeholders are [Course], [StartTime], [EndTime] and [Fullname]</span>
+                </div>
+                
             </div>
         </div>
 
