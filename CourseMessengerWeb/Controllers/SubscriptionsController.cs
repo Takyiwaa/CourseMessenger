@@ -196,12 +196,15 @@ namespace CourseMessengerWeb.Controllers
                 }
                 else
                 {
-                    subscription.Status = 1;
-                    using (var context = new ApplicationDbContext())
-                    {
-                        context.Entry(subscription).State = EntityState.Modified;
-                        await context.SaveChangesAsync();
-                    }
+                    //subscription.Status = 1;
+                    //using (var context = new ApplicationDbContext())
+                    //{
+                    //    context.Entry(subscription).State = EntityState.Modified;
+                    //    await context.SaveChangesAsync();
+                    //}
+
+                    await
+                 db.Database.ExecuteSqlCommandAsync("DELETE FROM [Subscriptions] WHERE [Id]=@p0", subscription.Id);
 
                    // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
@@ -238,12 +241,15 @@ namespace CourseMessengerWeb.Controllers
                 }
                 else
                 {
-                    subscription.Status = 1;
-                    using (var context = new ApplicationDbContext())
-                    {
-                        context.Entry(subscription).State = EntityState.Modified;
-                        await context.SaveChangesAsync();
-                    }
+                    //subscription.Status = 1;
+                    //using (var context = new ApplicationDbContext())
+                    //{
+                    //    context.Entry(subscription).State = EntityState.Modified;
+                    //    await context.SaveChangesAsync();
+                    //}
+
+                    await
+                 db.Database.ExecuteSqlCommandAsync("DELETE FROM [Subscriptions] WHERE [Id]=@p0", subscription.Id);
 
                    // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
                 }
@@ -307,13 +313,16 @@ namespace CourseMessengerWeb.Controllers
                 var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.LectureHours && e.IndexNumber == user);
                 if (subscription != null)
                 {
-                    subscription.Status = 0;
+                    //subscription.Status = 0;
 
-                    using (var context = new ApplicationDbContext())
-                    {
-                        context.Entry(subscription).State = EntityState.Modified;
-                        await context.SaveChangesAsync();
-                    }
+                    //using (var context = new ApplicationDbContext())
+                    //{
+                    //    context.Entry(subscription).State = EntityState.Modified;
+                    //    await context.SaveChangesAsync();
+                    //}
+
+                    await
+                  db.Database.ExecuteSqlCommandAsync("DELETE FROM [Subscriptions] WHERE [Id]=@p0", subscription.Id);
 
                   //  RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
@@ -330,13 +339,16 @@ namespace CourseMessengerWeb.Controllers
                 var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.NewsTips && e.IndexNumber == user);
                 if (subscription != null)
                 {
-                    subscription.Status = 0;
+                    //subscription.Status = 0;
 
-                    using (var context = new ApplicationDbContext())
-                    {
-                        context.Entry(subscription).State = EntityState.Modified;
-                        await context.SaveChangesAsync();
-                    }
+                    //using (var context = new ApplicationDbContext())
+                    //{
+                    //    context.Entry(subscription).State = EntityState.Modified;
+                    //    await context.SaveChangesAsync();
+                    //}
+
+                    await
+                  db.Database.ExecuteSqlCommandAsync("DELETE FROM [Subscriptions] WHERE [Id]=@p0", subscription.Id);
 
                   //  RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
                 }
