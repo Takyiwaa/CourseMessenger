@@ -149,14 +149,18 @@ namespace CourseMessengerWeb.Controllers
                 }
                 else
                 {
-                    subscription.Status = 1;
-                    using (var context = new ApplicationDbContext())
-                    {
-                        context.Entry(subscription).State = EntityState.Modified;
-                        await context.SaveChangesAsync();
-                    }
+                    //subscription.Status = 1;
+                    //using (var context = new ApplicationDbContext())
+                    //{
+                    //    context.Entry(subscription).State = EntityState.Modified;
+                    //    await context.SaveChangesAsync();
+                    //}
+                    await
+                        db.Database.ExecuteSqlCommandAsync("DELETE FROM [Subscriptions] WHERE [Id]=@p0", subscription.Id);
+                    //db.Subscriptions.Remove(subscription);
+                    //await db.SaveChangesAsync();
 
-                   // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                    // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
                
             }
@@ -274,15 +278,20 @@ namespace CourseMessengerWeb.Controllers
                 var subscription = await db.Subscriptions.FirstOrDefaultAsync(e => e.EntityId == id && e.SubscriptionType == SubscriptionType.ExamTimeTable && e.IndexNumber==user);
                 if (subscription != null)
                 {
-                    subscription.Status = 0;
+                   // subscription.Status = 0;
 
-                    using (var context = new ApplicationDbContext())
-                    {
-                        context.Entry(subscription).State= EntityState.Modified;
-                        await context.SaveChangesAsync();
-                    }
+                    await
+                        db.Database.ExecuteSqlCommandAsync("DELETE FROM [Subscriptions] WHERE [Id]=@p0", subscription.Id);
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                    //using (var context = new ApplicationDbContext())
+                    //{
+                    //    context.Entry(subscription).State= EntityState.Modified;
+                    //    await context.SaveChangesAsync();
+                    //}
+
+
+
+                    // RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["ExamTimeTable.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
 
             }
@@ -306,7 +315,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
+                  //  RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
                 }
 
             }
@@ -329,7 +338,7 @@ namespace CourseMessengerWeb.Controllers
                         await context.SaveChangesAsync();
                     }
 
-                    RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
+                  //  RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily);
                 }
 
             }
@@ -399,8 +408,8 @@ namespace CourseMessengerWeb.Controllers
                                 else
                                 {
                                     sub.EntityId = examReminder.Id;
-                                    sub.Status = 0;
-                                     subscriptionList.Add(sub);
+                                   // sub.Status = 0;
+                                   //  subscriptionList.Add(sub);
                                 }
                             }
                             else

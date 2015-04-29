@@ -17,7 +17,8 @@ namespace CourseMessengerWeb.Controllers
                 return RedirectToAction("MySubs", "subscriptions");
             }
 
-            return View();
+            return RedirectToAction("index","Departments");
+            //return View();
 
         }
 
