@@ -1,7 +1,9 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using CourseMessengerWeb.Components;
 using CourseMessengerWeb.Controllers;
 using Hangfire;
+using Hangfire.Dashboard;
 using Hangfire.SqlServer;
 using Microsoft.Owin;
 using Owin;
@@ -19,7 +21,7 @@ namespace CourseMessengerWeb
             {
                 config.UseSqlServerStorage("DefaultConnection");
                 config.UseServer();
-                
+                config.UseAuthorizationFilters(new MyRestrictiveAuthorizationFilter());
             });
 
            
@@ -29,6 +31,18 @@ namespace CourseMessengerWeb
             RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["LectureHours.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Hourly);
 
             RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily(7,30));
+        }
+    }
+
+    public class MyRestrictiveAuthorizationFilter : IAuthorizationFilter
+    {
+        public bool Authorize(IDictionary<string, object> owinEnvironment)
+        {
+            // In case you need an OWIN context, use the next line.
+            // `OwinContext` class is defined in the `Microsoft.Owin` package.
+            var context = new OwinContext(owinEnvironment);
+
+            return true; // or `true` to allow access
         }
     }
 }

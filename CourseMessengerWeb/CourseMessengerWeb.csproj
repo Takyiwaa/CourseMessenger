@@ -257,7 +257,8 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\PublishProfiles\live.pubxml" />
+    <None Include="Properties\PublishProfiles\live publish.pubxml" />
+    <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
