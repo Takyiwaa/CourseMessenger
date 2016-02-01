@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Threading;
 using CourseMessengerWeb.Components;
 using CourseMessengerWeb.Controllers;
 using Hangfire;
+using Hangfire.Common;
 using Hangfire.Dashboard;
+using Hangfire.Server;
 using Hangfire.SqlServer;
+using Hangfire.Storage;
 using Microsoft.Owin;
 using Owin;
 
@@ -21,6 +26,7 @@ namespace CourseMessengerWeb
             {
                 config.UseSqlServerStorage("DefaultConnection");
                 config.UseServer();
+                
                 config.UseAuthorizationFilters(new MyRestrictiveAuthorizationFilter());
             });
 
@@ -33,6 +39,8 @@ namespace CourseMessengerWeb
             RecurringJob.AddOrUpdate(ConfigurationManager.AppSettings["NewsTips.CronJob.Id"], () => new SmsEngine().NotifyStudents(), Cron.Daily(7,30));
         }
     }
+
+   
 
     public class MyRestrictiveAuthorizationFilter : IAuthorizationFilter
     {
